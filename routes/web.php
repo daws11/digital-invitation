@@ -1,45 +1,33 @@
 <?php
-// routes/web.php
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\GuestController;
-use App\Http\Controllers\Admin\DashboardController;
-use Illuminate\Support\Facades\Auth;
 
-// Route default untuk halaman login atau home setelah login
+use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\GuestController;
+use App\Http\Controllers\HomeController;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Route;
+
 Route::get('/', function () {
-    if (Auth::check()) {
-        return redirect()->route('home');
-    }
-    return view('auth.login');
+    return Auth::check() ? redirect()->route('dashboard') : view('auth.login');
 })->name('default');
 
-Route::put('/guests/{slug}/update-greeting', [GuestController::class, 'updateGreeting'])->name('guests.updateGreeting');
+Route::put('/guests/{slug}/update-greeting', [GuestController::class, 'updateGreeting'])
+    ->name('guests.updateGreeting');
+Route::put('/guests/{slug}/rsvp', [GuestController::class, 'updateRSVP'])->name('guests.updateRSVP');
 
-// Route untuk halaman home setelah login
-Route::middleware(['auth'])->get('/home', [GuestController::class, 'index'])->name('home');
-
-// Routes untuk autentikasi (login, register, dll.)
-Auth::routes();
-
-// Route publik untuk halaman `show` tamu tanpa autentikasi
-Route::get('/{slug}', [GuestController::class, 'show'])->name('guests.show');
-
-// Routes untuk fitur CRUD tamu yang memerlukan autentikasi
-Route::middleware(['auth'])->group(function () {
-    Route::get('/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');
-    
-    // Fitur CRUD untuk guests, selain `show`
-    Route::resource('guests', GuestController::class)->except(['show'])->names([
-        'index' => 'guests.index',
-        'create' => 'guests.create',
-        'store' => 'guests.store',
-        'edit' => 'guests.edit',
-        'update' => 'guests.update',
-        'destroy' => 'guests.destroy',
-    ]);
-
-    // Route untuk update kehadiran tamu melalui QR code, yang juga memerlukan autentikasi
-    Route::get('/guests/{slug}/update-attendance', [GuestController::class, 'updateAttendance'])->name('guests.updateAttendance');
+Route::middleware('auth')->group(function () {
+    Route::get('/dashboard', [HomeController::class, 'dashboard'])->name('dashboard');
+    Route::get('/home', [GuestController::class, 'index'])->name('home');
+    Route::get('/guests', [GuestController::class, 'index'])->name('guests.index');
+    Route::get('/guests/create', [GuestController::class, 'create'])->name('guests.create');
+    Route::post('/guests', [GuestController::class, 'store'])->name('guests.store');
+    Route::get('/guests/{guest}/edit', [GuestController::class, 'edit'])->name('guests.edit');
+    Route::put('/guests/{guest}', [GuestController::class, 'update'])->name('guests.update');
+    Route::delete('/guests/{guest}', [GuestController::class, 'destroy'])->name('guests.destroy');
+    Route::get('/guests/{slug}/update-attendance', [GuestController::class, 'updateAttendance'])
+        ->name('guests.updateAttendance');
 });
 
+Auth::routes();
 
+Route::get('/{slug?}', [GuestController::class, 'show'])
+    ->name('guests.show');

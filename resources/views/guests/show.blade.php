@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>Jack & Rose - Free Wedding Website Template</title>
+    <title>Jack & Rose</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="Free HTML Templates" name="keywords">
     <meta content="Free HTML Templates" name="description">
@@ -40,10 +40,10 @@
                                 <h3 class="text-uppercase font-weight-normal text-white m-0" style="letter-spacing: 2px; margin-bottom: 50px;">Dengan Hormat Kami Mengundang Saudara/i: </h3>
                             </div>
                             <h1 class="display-1 font-secondary text-white mt-n3 mb-md-4">{{ $guest->name ?? 'Tamu Undangan' }}</h1>
-                            <button type="button" class="btn-play mx-auto" data-toggle="modal"
+                            <!-- <button type="button" class="btn-play mx-auto" data-toggle="modal"
                                 data-src="https://www.youtube.com/embed/DWRcNpR6Kdc" data-target="#videoModal">
                                 <span></span>
-                            </button>
+                            </button> -->
                         </div>
                     </div>
                 </div>
@@ -229,13 +229,44 @@
     </div>
     <!-- Event End -->
 
-    <!-- RSVP Start -->
-    <div class="container-fluid py-5" id="rsvp">
+   <!-- RSVP Start -->
+<div class="container-fluid py-5" id="rsvp">
     <div class="container py-5">
         <div class="section-title position-relative text-center">
             <h6 class="text-uppercase text-primary mb-3" style="letter-spacing: 3px;">Kehadiran</h6>
             <h1 class="font-secondary display-4">Kehadiran Anda adalah kebahagiaan kami</h1>
             <i class="far fa-heart text-dark"></i>
+        </div>
+
+                <!-- Form RSVP -->
+                <div class="row justify-content-center mt-5">
+            <div class="col-lg-6">
+                <h4 class="text-center mb-4">Konfirmasi Kehadiran</h4>
+                <form action="{{ route('guests.updateRSVP', $guest->slug) }}" method="POST" class="bg-light p-4 rounded shadow">
+                    @csrf
+                    @method('PUT')
+
+                    <!-- Dropdown untuk kehadiran -->
+                    <div class="form-group">
+                        <label for="will_attend" class="text-lg">Apakah Anda Akan Hadir?</label>
+                        <select id="will_attend" name="will_attend" class="form-control bg-secondary border-0 p-3" style="height: 3.5rem;" required>
+                            <option value="1" {{ $guest->will_attend ? 'selected' : '' }}>Ya</option>
+                            <option value="0" {{ $guest->will_attend === 0 ? 'selected' : '' }}>Tidak</option>
+                        </select>
+                    </div>
+
+                    <!-- Dropdown jumlah orang -->
+                    <div class="form-group">
+                        <label for="number_of_guests" class="text-lg">Berapa Orang Yang Bersama Anda?</label>
+                        <select id="number_of_guests" name="number_of_guests" class="form-control bg-secondary border-0 p-3" style="height: 3.5rem;" required>
+                            @for ($i = 1; $i <= 5; $i++)
+                                <option value="{{ $i }}" {{ $guest->number_of_guests == $i ? 'selected' : '' }}>{{ $i }}</option>
+                            @endfor
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block mt-4">Konfirmasi Kehadiran</button>
+                </form>
+            </div>
         </div>
 
         <!-- Greeting and QR Code Section -->
@@ -259,7 +290,6 @@
             <div class="col-lg-6 mb-5 text-center">
                 <h4 class="text-center mb-4">Scan QR Code untuk Kehadiran</h4>
                 <div class="bg-white p-4 rounded shadow d-flex justify-content-center">
-                    <!-- Generate QR Code to Point to Update Attendance Route -->
                     {!! QrCode::size(200)->generate(route('guests.updateAttendance', $guest->slug)) !!}
                 </div>
                 <p class="mt-3">Silakan scan QR ini saat kedatangan untuk konfirmasi kehadiran Anda.</p>
@@ -282,10 +312,7 @@
         </div>
     </div>
 </div>
-
-    <!-- RSVP End -->
-
-
+<!-- RSVP End -->
     <!-- Footer Start -->
     <div class="container-fluid bg-dark text-white py-5" id="contact" style="margin-top: 90px;">
         <div class="container text-center py-5">

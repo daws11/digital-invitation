@@ -8,20 +8,18 @@ use Illuminate\Support\Str;
 
 class GuestController extends Controller
 {
-    // Menampilkan daftar tamu
     public function index()
     {
         $guests = Guest::all();
         return view('guests.index', compact('guests'));
     }
 
-    // Menampilkan form untuk menambah tamu baru
     public function create()
     {
         return view('guests.create');
     }
 
-    // Menyimpan tamu baru ke database
+
     public function store(Request $request)
     {
         $request->validate([
@@ -32,32 +30,35 @@ class GuestController extends Controller
         Guest::create([
             'name' => $request->name,
             'greeting_message' => $request->greeting_message,
-            'slug' => Str::slug($request->name) // Generate slug dari nama
+            'slug' => Str::slug($request->name),
         ]);
 
-        // Pastikan untuk mengarahkan ke 'home' atau 'guests.index' yang tersedia
         return redirect()->route('home')->with('success', 'Tamu berhasil ditambahkan.');
     }
 
-    // Menampilkan detail tamu berdasarkan slug tanpa mengubah status kehadiran
-    public function show($slug)
+    public function show($slug = null)
     {
-        // Temukan tamu berdasarkan slug untuk menampilkan detail spesifik mereka
-        $guest = Guest::where('slug', $slug)->firstOrFail();
+        $slug = $slug ?? 'tamu-undangan';
 
-        // Ambil semua ucapan yang ada dari seluruh tamu
+        $guest = Guest::where('slug', $slug)->first();
+
+        if (!$guest) {
+            $guest = (object) [
+                'name' => 'Tamu Undangan',
+                'slug' => 'tamu-undangan',
+            ];
+        }
+
         $allGreetings = Guest::whereNotNull('greeting_message')->get();
 
         return view('guests.show', compact('guest', 'allGreetings'));
-}
+    }
 
-    // Menampilkan form edit tamu
     public function edit(Guest $guest)
     {
         return view('guests.edit', compact('guest'));
     }
 
-    // Memperbarui data tamu
     public function update(Request $request, Guest $guest)
     {
         $request->validate([
@@ -68,20 +69,18 @@ class GuestController extends Controller
         $guest->update([
             'name' => $request->name,
             'greeting_message' => $request->greeting_message,
-            'slug' => Str::slug($request->name)
+            'slug' => Str::slug($request->name),
         ]);
 
         return redirect()->route('home')->with('success', 'Tamu berhasil diperbarui.');
     }
 
-    // Menghapus tamu dari database
     public function destroy(Guest $guest)
     {
         $guest->delete();
         return redirect()->route('home')->with('success', 'Tamu berhasil dihapus.');
     }
 
-    // Memperbarui status kehadiran tamu setelah QR code dipindai
     public function updateAttendance($slug)
     {
         $guest = Guest::where('slug', $slug)->firstOrFail();
@@ -94,19 +93,36 @@ class GuestController extends Controller
     }
 
     public function updateGreeting(Request $request, $slug)
-{
-    $request->validate([
-        'greeting_message' => 'required|string'
-    ]);
+    {
+        $request->validate([
+            'greeting_message' => 'required|string',
+        ]);
 
-    $guest = Guest::where('slug', $slug)->firstOrFail();
+        $guest = Guest::where('slug', $slug)->firstOrFail();
 
-    // Perbarui kolom 'greeting_message' dengan ucapan yang diberikan
-    $guest->update([
-        'greeting_message' => $request->greeting_message,
-    ]);
+        $guest->update([
+            'greeting_message' => $request->greeting_message,
+        ]);
 
-    return redirect()->route('guests.show', $slug)->with('success', 'Ucapan Anda berhasil dikirim.');
+        return redirect()->route('guests.show', $slug)->with('success', 'Ucapan Anda berhasil dikirim.');
+    }
+
+    public function updateRSVP(Request $request, $slug)
+    {
+        $guest = Guest::where('slug', $slug)->firstOrFail();
+
+        $request->validate([
+            'will_attend' => 'required|boolean',
+            'number_of_guests' => 'required|integer|min:1|max:5',
+        ]);
+
+        $guest->update([
+            'will_attend' => $request->will_attend,
+            'number_of_guests' => $request->number_of_guests,
+        ]);
+
+        return redirect()->route('guests.show', $slug)->with('success', 'RSVP berhasil diperbarui.');
+    }
+
 }
 
-}

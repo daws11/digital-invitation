@@ -14,6 +14,14 @@ export default {
             fontFamily: {
                 sans: ['Figtree', ...defaultTheme.fontFamily.sans],
             },
+            colors: {
+                primary: {
+                  light: '#cdcce0', // Paling terang
+                  DEFAULT: '#9694FF', // Warna utama
+                  dark: '#3D3BF3', // Warna utama gelap
+                },
+                danger: '#FF2929', // Warna aksen (merah)
+              },
         },
     },
     plugins: [],
