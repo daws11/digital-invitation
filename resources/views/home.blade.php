@@ -4,6 +4,13 @@
 
 @section('content')
 <div class="bg-primary-light min-h-screen p-6">
+    <div class="relative w-full mx-auto mb-8">
+        <!-- Background Image -->
+        <div class="relative">
+            <img src="img/jackrose.jpg" alt="Wedding Image" class="w-full h-auto rounded-lg shadow-md">
+            <div class="absolute inset-0 bg-gradient-to-b from-transparent to-gray-900 opacity-50 rounded-lg"></div>
+        </div>
+    </div>
     <div class="flex justify-between items-center mb-8">
         <h1 class="text-3xl font-bold text-primary-dark">Daftar Tamu Undangan</h1>
         <!-- Tombol untuk menambah tamu baru -->

@@ -92,6 +92,11 @@ class GuestController extends Controller
         return redirect()->route('home')->with('success', 'Kehadiran tamu berhasil diperbarui.');
     }
 
+    public function showModal()
+{
+    $guests = Guest::all(); // Get all guests
+    return view('navbar', compact('guests')); // Pass the guests to the view
+}
     public function updateGreeting(Request $request, $slug)
     {
         $request->validate([
@@ -123,6 +128,39 @@ class GuestController extends Controller
 
         return redirect()->route('guests.show', $slug)->with('success', 'RSVP berhasil diperbarui.');
     }
-
+    public function handleDynamicQRScan(Request $request)
+    {
+        try {
+            // Validate slug from the request
+            $request->validate([
+                'slug' => 'required|string|exists:guests,slug',
+            ]);
+    
+            // Retrieve the guest record
+            $guest = Guest::where('slug', $request->slug)->firstOrFail();
+    
+            // Check if the guest has not marked attendance yet
+            if (!$guest->attended) {
+                $guest->update(['attended' => true]);
+            }
+    
+            // Respond with success
+            return response()->json([
+                'success' => true,
+                'message' => 'Attendance updated successfully.',
+                'guest' => [
+                    'name' => $guest->name,
+                    'number_of_guests' => $guest->number_of_guests,
+                ],
+            ]);
+        } catch (\Exception $e) {
+            // Handle any error that occurs
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to update attendance.',
+                'error' => $e->getMessage(),
+            ], 500);
+        }
+    }
 }
 

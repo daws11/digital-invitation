@@ -26,3 +26,4 @@ function startQRScanner(updateAttendanceUrl) {
         console.error("Gagal memulai QR scanner:", err);
     });
 }
+

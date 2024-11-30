@@ -7,7 +7,7 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Laravel') }}</title>
+    <title>{{ config('digital Wedding', 'Digital Wedding') }}</title>
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.bunny.net">
@@ -37,8 +37,11 @@
 
         <!-- Include Navbar -->
         @unless(Route::currentRouteName() === 'login')
-            @include('components.navbar')
+            @include('components.navbar', ['guests' => $guests])
         @endunless
+
     </div>
 </body>
 </html>
+
+

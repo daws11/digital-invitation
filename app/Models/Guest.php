@@ -22,4 +22,6 @@ class Guest extends Model
             $guest->slug = Str::slug($guest->name . '-');
         });
     }
+
+
 }

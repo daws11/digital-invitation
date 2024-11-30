@@ -243,29 +243,31 @@
             <div class="col-lg-6">
                 <h4 class="text-center mb-4">Konfirmasi Kehadiran</h4>
                 <form action="{{ route('guests.updateRSVP', $guest->slug) }}" method="POST" class="bg-light p-4 rounded shadow">
-                    @csrf
-                    @method('PUT')
+    @csrf
+    @method('PUT')
 
-                    <!-- Dropdown untuk kehadiran -->
-                    <div class="form-group">
-                        <label for="will_attend" class="text-lg">Apakah Anda Akan Hadir?</label>
-                        <select id="will_attend" name="will_attend" class="form-control bg-secondary border-0 p-3" style="height: 3.5rem;" required>
-                            <option value="1" {{ $guest->will_attend ? 'selected' : '' }}>Ya</option>
-                            <option value="0" {{ $guest->will_attend === 0 ? 'selected' : '' }}>Tidak</option>
-                        </select>
-                    </div>
+    <!-- Dropdown untuk kehadiran -->
+    <div class="form-group">
+        <label for="will_attend" class="text-lg">Apakah Anda Akan Hadir?</label>
+        <select id="will_attend" name="will_attend" class="form-control bg-secondary border-0 p-3" style="height: 3.5rem;" required>
+            <!-- Menggunakan null coalescing operator untuk memeriksa apakah property ada -->
+            <option value="1" {{ ($guest->will_attend ?? null) == 1 ? 'selected' : '' }}>Ya</option>
+            <option value="0" {{ ($guest->will_attend ?? null) === 0 ? 'selected' : '' }}>Tidak</option>
+        </select>
+    </div>
 
-                    <!-- Dropdown jumlah orang -->
-                    <div class="form-group">
-                        <label for="number_of_guests" class="text-lg">Berapa Orang Yang Bersama Anda?</label>
-                        <select id="number_of_guests" name="number_of_guests" class="form-control bg-secondary border-0 p-3" style="height: 3.5rem;" required>
-                            @for ($i = 1; $i <= 5; $i++)
-                                <option value="{{ $i }}" {{ $guest->number_of_guests == $i ? 'selected' : '' }}>{{ $i }}</option>
-                            @endfor
-                        </select>
-                    </div>
-                    <button type="submit" class="btn btn-primary btn-block mt-4">Konfirmasi Kehadiran</button>
-                </form>
+    <!-- Dropdown jumlah orang -->
+    <div class="form-group">
+        <label for="number_of_guests" class="text-lg">Berapa Orang Yang Bersama Anda?</label>
+        <select id="number_of_guests" name="number_of_guests" class="form-control bg-secondary border-0 p-3" style="height: 3.5rem;" required>
+            @for ($i = 1; $i <= 5; $i++)
+                <option value="{{ $i }}" {{ ($guest->number_of_guests ?? 1) == $i ? 'selected' : '' }}>{{ $i }}</option>
+            @endfor
+        </select>
+    </div>
+    <button type="submit" class="btn btn-primary btn-block mt-4">Konfirmasi Kehadiran</button>
+</form>
+
             </div>
         </div>
 

@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\GuestController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\NavbarController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -23,8 +24,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/guests/{guest}/edit', [GuestController::class, 'edit'])->name('guests.edit');
     Route::put('/guests/{guest}', [GuestController::class, 'update'])->name('guests.update');
     Route::delete('/guests/{guest}', [GuestController::class, 'destroy'])->name('guests.destroy');
-    Route::get('/guests/{slug}/update-attendance', [GuestController::class, 'updateAttendance'])
-        ->name('guests.updateAttendance');
+    Route::get('/guests/{slug}/update-attendance', [GuestController::class, 'updateAttendance'])->name('guests.updateAttendance');
 });
 
 Auth::routes();
