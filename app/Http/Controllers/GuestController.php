@@ -80,11 +80,18 @@ class GuestController extends Controller
         return redirect()->route('home')->with('success', 'Tamu berhasil diperbarui.');
     }
 
-    public function destroy(Guest $guest)
+    public function destroy($id)
     {
-        $guest->delete();
-        return redirect()->route('home')->with('success', 'Tamu berhasil dihapus.');
+        $guest = Guest::find($id);
+        
+        if ($guest) {
+            $guest->delete();
+            return redirect()->route('guests.index')->with('success', 'Tamu berhasil dihapus.');
+        }
+
+        return redirect()->route('guests.index')->with('error', 'Tamu tidak ditemukan.');
     }
+
 
     public function updateAttendance($slug)
     {

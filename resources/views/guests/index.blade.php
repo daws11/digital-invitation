@@ -48,8 +48,6 @@
                         <tr class="hover:bg-primary-light/50 transition-colors duration-200">
                             <!-- Nama -->
                             <td class="py-3 px-4 border-b text-primary-dark">{{ $guest->name }}</td>
-                            
-
                             <!-- Kehadiran -->
                             <td class="py-3 px-4 border-b">
                                 @if ($guest->attended)
@@ -93,13 +91,13 @@
                                             </a>
                                         </li>
                                         <li>
-                                            <form action="{{ route('guests.destroy', $guest->id) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus tamu ini?')">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit" class="block w-full text-left px-4 py-2 text-danger hover:bg-red-100 hover:text-red-600">
-                                                    <i class="fa-solid fa-trash mr-2"></i>Hapus
-                                                </button>
-                                            </form>
+                                        <form action="{{ route('guests.destroy', $guest->id) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus tamu ini?')">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="block w-full text-left px-4 py-2 text-danger hover:bg-red-100 hover:text-red-600">
+                                                <i class="fa-solid fa-trash mr-2"></i>Hapus
+                                            </button>
+                                        </form>
                                         </li>
                                     </ul>
                                 </div>
