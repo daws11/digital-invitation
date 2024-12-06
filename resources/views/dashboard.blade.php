@@ -4,7 +4,7 @@
 
 @section('content')
 <style>
-    /* Responsive Styling for the Wedding Section */
+    /* Custom styles for the Wedding Section (if necessary) */
     .wedding-image {
         position: relative;
     }
@@ -51,24 +51,78 @@
         </div>
     </div>
 
-    <!-- Statistik -->
-    <div class="grid grid-cols-3 gap-6 mb-8">
-        <!-- Total Undangan -->
-        <div class="p-4 bg-primary-dark text-white rounded-lg shadow hover:shadow-lg transition-shadow duration-300">
-            <h2 class="text-lg font-semibold">Total Undangan</h2>
-            <p class="text-4xl font-bold">{{ $totalGuests }}</p>
+    <!-- Menu Cards -->
+    <div class="grid grid-cols-2 gap-6">
+        <!-- Card 1: Data Tamu -->
+        <div class="bg-primary-dark text-white p-6 rounded-lg shadow-lg flex justify-center items-center transition-shadow duration-300">
+            <a href="{{ route('home') }}" 
+               class="flex flex-col items-center text-center {{ request()->routeIs('home') ? 'text-white' : 'text-gray-400' }} 
+                    hover:text-yellow-300 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:ring-opacity-50 transition-transform duration-200">
+                <span class="text-5xl mb-2">
+                    <i class="fa-solid fa-users"></i>
+                </span>
+                <span class="text-lg">Data Tamu</span>
+            </a>
         </div>
 
-        <!-- Tamu Hadir -->
-        <div class="p-4 bg-primary-dark text-white rounded-lg shadow hover:shadow-lg transition-shadow duration-300">
-            <h2 class="text-lg font-semibold">Jumlah Hadir</h2>
-            <p class="text-4xl font-bold">{{ $totalAttended }}</p>
+        <!-- Card 2: Buku Tamu -->
+        <div class="bg-primary-dark text-white p-6 rounded-lg shadow-lg flex justify-center items-center transition-shadow duration-300">
+            <a href="{{ route('home') }}" 
+               class="flex flex-col items-center text-center {{ request()->routeIs('home') ? 'text-white' : 'text-gray-400' }} 
+                    hover:text-yellow-300 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:ring-opacity-50 transition-transform duration-200">
+                <span class="text-5xl mb-2">
+                    <i class="fa-solid fa-book"></i>
+                </span>
+                <span class="text-lg">Kehadiran</span>
+            </a>
         </div>
 
-        <!-- Total Tamu -->
-        <div class="p-4 bg-primary-dark text-white rounded-lg shadow hover:shadow-lg transition-shadow duration-300">
-            <h2 class="text-lg font-semibold">Jumlah Tamu</h2>
-            <p class="text-4xl font-bold">{{ $totalNumberOfGuests }}</p>
+        <!-- Card 3: Laporan -->
+        <div class="bg-primary-dark text-white p-6 rounded-lg shadow-lg flex justify-center items-center transition-shadow duration-300">
+            <a href="{{ route('home') }}" 
+               class="flex flex-col items-center text-center {{ request()->routeIs('home') ? 'text-white' : 'text-gray-400' }} 
+                    hover:text-yellow-300 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:ring-opacity-50 transition-transform duration-200">
+                <span class="text-5xl mb-2">
+                    <i class="fa-solid fa-qrcode"></i>
+                </span>
+                <span class="text-lg">Check In</span>
+            </a>
+        </div>
+
+        <!-- Card 4: Jadwal -->
+        <div class="bg-primary-dark text-white p-6 rounded-lg shadow-lg flex justify-center items-center transition-shadow duration-300">
+            <a href="{{ route('home') }}" 
+               class="flex flex-col items-center text-center {{ request()->routeIs('home') ? 'text-white' : 'text-gray-400' }} 
+                    hover:text-yellow-300 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:ring-opacity-50 transition-transform duration-200">
+                <span class="text-5xl mb-2">
+                    <i class="fa-solid fa-hand-holding-heart"></i>
+                </span>
+                <span class="text-lg">Souvenirs</span>
+            </a>
+        </div>
+
+        <!-- Card 5: Pengaturan -->
+        <div class="bg-primary-dark text-white p-6 rounded-lg shadow-lg flex justify-center items-center transition-shadow duration-300">
+            <a href="{{ route('home') }}" 
+               class="flex flex-col items-center text-center {{ request()->routeIs('home') ? 'text-white' : 'text-gray-400' }} 
+                    hover:text-yellow-300 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:ring-opacity-50 transition-transform duration-200">
+                <span class="text-5xl mb-2">
+                    <i class="fa-solid fa-comments"></i>
+                </span>
+                <span class="text-lg">RSVP</span>
+            </a>
+        </div>
+
+        <!-- Card 6: Logout -->
+        <div class="bg-primary-dark text-white p-6 rounded-lg shadow-lg flex justify-center items-center transition-shadow duration-300">
+            <a href="{{ route('guests.show', ['slug' => 'tamu-undangan']) }}" 
+               class="flex flex-col items-center text-center {{ request()->routeIs('guests.show') ? 'text-white' : 'text-gray-400' }} 
+                    hover:text-yellow-300 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:ring-opacity-50 transition-transform duration-200">
+                <span class="text-5xl mb-2">
+                    <i class="fa-solid fa-desktop"></i>
+                </span>
+                <span class="text-lg">Welcome</span>
+            </a>
         </div>
     </div>
 

@@ -37,7 +37,7 @@
 
         <!-- Include Navbar -->
         @unless(Route::currentRouteName() === 'login')
-            @include('components.navbar', ['guests' => $guests])
+            @include('components.navbar')
         @endunless
 
     </div>

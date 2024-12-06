@@ -4,6 +4,27 @@
 
 @section('content')
 <div class="bg-primary-light min-h-screen py-8">
+<!-- Statistik -->
+<div class="grid grid-cols-3 gap-6 mx-8 mb-6">
+        <!-- Total Undangan -->
+        <div class="p-4 bg-primary-dark text-white rounded-lg shadow hover:shadow-lg transition-shadow duration-300">
+            <h2 class="text-lg font-semibold">Total Undangan</h2>
+            <p class="text-4xl font-bold">{{ $totalGuests }}</p>
+        </div>
+
+        <!-- Tamu Hadir -->
+        <div class="p-4 bg-primary-dark text-white rounded-lg shadow hover:shadow-lg transition-shadow duration-300">
+            <h2 class="text-lg font-semibold">Jumlah Hadir</h2>
+            <p class="text-4xl font-bold">{{ $totalAttended }}</p>
+        </div>
+
+        <!-- Total Tamu -->
+        <div class="p-4 bg-primary-dark text-white rounded-lg shadow hover:shadow-lg transition-shadow duration-300">
+            <h2 class="text-lg font-semibold">Jumlah Tamu</h2>
+            <p class="text-4xl font-bold">{{ $totalNumberOfGuests }}</p>
+        </div>
+    </div>
+        
     <div class="container mx-auto px-6">
         <div class="flex justify-between items-center mb-8">
             <h2 class="text-3xl font-bold text-primary-dark">Daftar Tamu</h2>
@@ -62,6 +83,16 @@
                                             </a>
                                         </li>
                                         <li>
+                                            <a href="{{ route('guests.edit', $guest->id) }}" class="block px-4 py-2 text-primary hover:bg-primary-light hover:text-primary-dark">
+                                                <i class="fa-solid fa-camera mr-2"></i>Foto
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="{{ url('/' . $guest->slug) }}" class="block px-4 py-2 text-primary hover:bg-primary-light hover:text-primary-dark">
+                                                <i class="fa-solid fa-film mr-2"></i>Lihat Foto
+                                            </a>
+                                        </li>
+                                        <li>
                                             <form action="{{ route('guests.destroy', $guest->id) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus tamu ini?')">
                                                 @csrf
                                                 @method('DELETE')
@@ -101,23 +132,7 @@
     </div>
 </div>
 
-<!-- Modal Success -->
-<div id="successModal" class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center hidden z-50">
-    <div class="bg-white w-full max-w-md rounded-lg shadow-lg p-6">
-        <h2 class="text-lg font-bold text-green-600 mb-4">Scan Berhasil!</h2>
-        <p class="text-gray-800 text-center mb-4" id="guestInfo"></p>
-        <button onclick="closeSuccessModal()" class="px-4 py-2 bg-green-600 text-white rounded shadow hover:bg-green-700">Tutup</button>
-    </div>
-</div>
 
-<!-- Modal Error -->
-<div id="errorModal" class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center hidden z-50">
-    <div class="bg-white w-full max-w-md rounded-lg shadow-lg p-6">
-        <h2 class="text-lg font-bold text-red-600 mb-4">Scan Gagal</h2>
-        <p class="text-gray-800 text-center mb-4">QR code tidak valid untuk tamu ini.</p>
-        <button onclick="closeErrorModal()" class="px-4 py-2 bg-red-600 text-white rounded shadow hover:bg-red-700">Tutup</button>
-    </div>
-</div>
 
 <!-- QR Scanner Scripts -->
 <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>

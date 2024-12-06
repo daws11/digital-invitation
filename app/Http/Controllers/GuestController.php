@@ -10,8 +10,13 @@ class GuestController extends Controller
 {
     public function index()
     {
-        $guests = Guest::all();
-        return view('guests.index', compact('guests'));
+        $guests = Guest::all(); // Ambil semua tamu
+        $totalGuests = Guest::count(); 
+        $totalAttended = Guest::where('will_attend', 1)->count(); 
+        $totalNumberOfGuests = Guest::whereNotNull('number_of_guests')->sum('number_of_guests'); 
+        $guests = Guest::select('name', 'will_attend', 'number_of_guests')->get(); 
+        
+        return view('guests.index', compact('totalGuests', 'totalAttended', 'totalNumberOfGuests', 'guests'));
     }
 
     public function create()
@@ -92,11 +97,6 @@ class GuestController extends Controller
         return redirect()->route('home')->with('success', 'Kehadiran tamu berhasil diperbarui.');
     }
 
-    public function showModal()
-{
-    $guests = Guest::all(); // Get all guests
-    return view('navbar', compact('guests')); // Pass the guests to the view
-}
     public function updateGreeting(Request $request, $slug)
     {
         $request->validate([
