@@ -11,7 +11,7 @@ class Guest extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'slug', 'attended', 'greeting_message', 'will_attend', 'number_of_guests'];
+    protected $fillable = ['name', 'slug', 'attended', 'greeting_message', 'will_attend', 'number_of_guests','photo'];
 
     // Generate slug otomatis saat membuat atau mengupdate nama
     protected static function boot()
@@ -19,9 +19,20 @@ class Guest extends Model
         parent::boot();
 
         static::creating(function ($guest) {
-            $guest->slug = Str::slug($guest->name . '-');
+            if (empty($guest->slug)) {
+                $guest->slug = Str::slug($guest->name . '-' . uniqid());
+            }
+        });
+
+        static::updating(function ($guest) {
+            if (empty($guest->slug)) {
+                $guest->slug = Str::slug($guest->name . '-' . uniqid());
+            }
         });
     }
-
+    public function getRouteKeyName()
+    {
+        return 'slug';
+    }
 
 }

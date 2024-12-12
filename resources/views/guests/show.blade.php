@@ -40,10 +40,6 @@
                                 <h3 class="text-uppercase font-weight-normal text-white m-0" style="letter-spacing: 2px; margin-bottom: 50px;">Dengan Hormat Kami Mengundang Saudara/i: </h3>
                             </div>
                             <h1 class="display-1 font-secondary text-white mt-n3 mb-md-4">{{ $guest->name ?? 'Tamu Undangan' }}</h1>
-                            <!-- <button type="button" class="btn-play mx-auto" data-toggle="modal"
-                                data-src="https://www.youtube.com/embed/DWRcNpR6Kdc" data-target="#videoModal">
-                                <span></span>
-                            </button> -->
                         </div>
                     </div>
                 </div>
