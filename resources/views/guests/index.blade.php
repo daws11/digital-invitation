@@ -35,7 +35,7 @@
         </div>
 
         <!-- Table -->
-        <div class="overflow-x-auto bg-white rounded-lg shadow">
+        <div class="bg-white rounded-lg shadow">
     <table class="min-w-full bg-white">
         <thead class="bg-primary-light text-primary-dark">
             <tr>

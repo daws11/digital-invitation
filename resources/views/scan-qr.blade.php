@@ -1,8 +1,10 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="container mx-auto p-4 bg-primary-light">
-        <h1 class="text-3xl font-bold text-primary-dark text-center mb-6">Scan QR Code untuk Kehadiran Tamu</h1>
+    <div class="container mx-auto p-4 bg-primary-light h-screen">
+        <h1 class="text-3xl font-bold text-primary-dark text-center mb-6">
+            Scan QR Code untuk Kehadiran Tamu
+        </h1>
 
         <!-- Dropdown untuk memilih kamera -->
         <div class="mb-4">
@@ -13,7 +15,9 @@
         </div>
 
         <!-- QR Code Scanner -->
-        <div id="reader" class="w-full h-96 bg-gray-200 rounded-lg mb-6"></div>
+         <div class="container mx-auto w-full h-max bg-gray-200 rounded-xl">
+             <div id="reader" class="w-full h-full bg-gray-200 rounded-xl"></div>
+        </div>
     </div>
 
     <!-- Modal untuk Menampilkan Hasil Kehadiran -->
@@ -23,7 +27,9 @@
             <p id="guest-name" class="text-xl mb-2"></p>
             <p id="attendance-status" class="text-lg mb-4"></p>
             <p id="guest-count" class="text-lg"></p>
-            <button id="close-modal" class="mt-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">Tutup</button>
+            <button id="close-modal" class="mt-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">
+                Tutup
+            </button>
         </div>
     </div>
 
@@ -32,10 +38,10 @@
     <script>
         let html5QrCode;
         let currentDeviceId = null;
-
+        let videoStream = null;
+        let isScannerRunning = false; 
         // Menangani pemindaian QR Code
         function onScanSuccess(decodedText, decodedResult) {
-            // Ambil slug dari URL yang dipindai
             const url = decodedText;
             const regex = /\/guests\/([a-z0-9\-]+)\/update-attendance/;
             const match = url.match(regex);
@@ -103,17 +109,22 @@
 
                     // Masukkan kamera yang ditemukan ke dropdown
                     cameras.forEach(device => {
-                        const option = document.createElement('option');
-                        option.value = device.deviceId;
-                        option.text = device.label || `Kamera ${cameraSelect.length + 1}`;
-                        cameraSelect.appendChild(option);
+                        if (device.label) {
+                            const option = document.createElement('option');
+                            option.value = device.deviceId;
+                            option.text = device.label;
+                            cameraSelect.appendChild(option);
+                        }
                     });
 
                     // Tambahkan event listener untuk perubahan pilihan kamera
                     cameraSelect.addEventListener('change', function() {
+                        console.log('Pilihan kamera berubah:', this.value);
                         if (this.value) {
                             currentDeviceId = this.value;
                             startQrCodeScanner();
+                        } else {
+                            stopQrCodeScanner(); // Matikan pemindaian dan video ketika memilih opsi default
                         }
                     });
                 })
@@ -123,9 +134,20 @@
                 });
         }
 
+        // Mengambil izin untuk mengakses kamera dan memulai pengambilan daftar kamera
+        navigator.mediaDevices.getUserMedia({ video: true })
+            .then(stream => {
+                stream.getTracks().forEach(track => track.stop());
+                getCameras();
+            })
+            .catch(err => {
+                console.error('Izin kamera ditolak:', err);
+                alert('Mohon izinkan akses ke kamera untuk menggunakan fitur ini.');
+            });
+
         // Memulai pemindaian QR Code dengan kamera yang dipilih
         function startQrCodeScanner() {
-            if (html5QrCode) {
+            if (isScannerRunning) {
                 html5QrCode.stop(); // Stop kamera yang sedang berjalan
             }
 
@@ -138,15 +160,51 @@
 
             html5QrCode.start(
                 { deviceId: { exact: currentDeviceId } },  // Menggunakan deviceId kamera yang dipilih
-                { fps: 10, qrbox: 250 },  // Mengatur frame per second dan ukuran kotak pemindaian
+                { fps: 10, qrbox: 500 },  // Mengatur frame per second dan ukuran kotak pemindaian
                 onScanSuccess,
                 onScanFailure
-            );
+            ).then((stream) => {
+                // Store the media stream for later use
+                const videoElement = document.querySelector("#reader video");
+                const qrShadedRegion = document.getElementById('qr-shaded-region');
+                if (videoElement) {
+                    // Memberikan kelas 'rounded-xl' menggunakan Tailwind CSS
+                    videoElement.classList.add("rounded-2xl");
+                }
+
+                if(qrShadedRegion) {
+                    // Memberikan kelas 'rounded-xl' menggunakan Tailwind CSS
+                    qrShadedRegion.style.bordercolor = 'transparent'; 
+                }
+                videoStream = stream;
+            })
+            .catch((error) => {
+                console.error("Error starting QR code scanner:", error);
+            });
+
+      
+
+            isScannerRunning = true; 
+        }
+
+        function stopQrCodeScanner() {
+            if (isScannerRunning) {
+                html5QrCode.stop();  // Stop kamera yang sedang berjalan
+            }
+
+            if (videoStream) {
+                videoStream.getTracks().forEach(track => track.stop());  // Matikan stream video
+            }
+
+            // Setel currentDeviceId ke null untuk menunjukkan bahwa kamera dimatikan
+            currentDeviceId = null;
+            isScannerRunning = false;
         }
 
         // Mulai mengambil daftar kamera saat halaman dimuat
         window.onload = function() {
             getCameras();
+            console.log('halaman dimuat');
         };
     </script>
 @endsection

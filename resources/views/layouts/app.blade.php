@@ -31,7 +31,7 @@
 <body class="bg-gray-100 font-sans antialiased">
     <div id="app">
         <!-- Main Content -->
-        <main class="pb-20"> <!-- Extra space for navbar -->
+        <main> <!-- Extra space for navbar -->
             @yield('content')
         </main>
 
