@@ -18,7 +18,8 @@ Route::put('/guests/{slug}/update-greeting', [GuestController::class, 'updateGre
 Route::put('/guests/{slug}/rsvp', [GuestController::class, 'updateRSVP'])->name('guests.updateRSVP');
 
 Route::middleware('auth')->group(function () {
-    Route::get('/dashboard', [HomeController::class, 'dashboard'])->name('dashboard');
+    Route::get('/dashboard', [HomeController::class, 'dashboard'])->name('dashboard');    
+    Route::get('/api/guests', [HomeController::class, 'getGuests']);
     Route::get('/home', [GuestController::class, 'index'])->name('home');
     Route::get('/guests', [GuestController::class, 'index'])->name('guests.index');
     Route::get('/guests/create', [GuestController::class, 'create'])->name('guests.create');

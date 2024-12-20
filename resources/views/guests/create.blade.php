@@ -15,10 +15,28 @@
                 <input type="text" name="name" id="name" class="w-full mt-1 p-2 border border-gray-300 rounded focus:ring-primary-light focus:border-primary-dark" required>
             </div>
             
-            <!-- Input Ucapan -->
-            <div class="mb-4">
-                <label for="greeting_message" class="block text-sm font-medium text-primary-dark">Ucapan</label>
-                <textarea name="greeting_message" id="greeting_message" class="w-full mt-1 p-2 border border-gray-300 rounded focus:ring-primary-light focus:border-primary-dark"></textarea>
+           <!-- Input Nomor WA -->
+           <div class="mb-4">
+                <label for="phone_number" class="block text-sm font-medium text-primary-dark">Nomor WA</label>
+                <input type="tel" name="phone_number" id="phone_number" class="w-full mt-1 p-2 border border-gray-300 rounded focus:ring-primary-light focus:border-primary-dark" required>
+            </div>
+
+
+           <!-- Dropdown Jenis Tamu -->
+           <div class="mb-4">
+                <label for="guest_type" class="block text-sm font-medium text-primary-dark">Jenis Tamu</label>
+                <select name="guest_type" id="guest_type" class="w-full mt-1 p-2 border border-gray-300 rounded focus:ring-primary-light focus:border-primary-dark" required>
+                    <option value="VIP">VIP</option>
+                    <option value="Regular">Regular</option>
+                    <option value="Special">Special</option>
+                    <option value="">Jenis tamu lainnya</option>
+                </select>
+            </div>
+
+            <!-- Input Custom Jenis Tamu (Jika diperlukan) -->
+            <div class="mb-4" id="custom-guest-type-container" style="display: none;">
+                <label for="custom_guest_type" class="block text-sm font-medium text-primary-dark">Jenis Tamu Lainnya</label>
+                <input type="text" name="custom_guest_type" id="custom_guest_type" class="w-full mt-1 p-2 border border-gray-300 rounded focus:ring-primary-light focus:border-primary-dark">
             </div>
             
             <!-- Tombol Simpan -->
@@ -28,4 +46,20 @@
         </form>
     </div>
 </div>
+
+
+<script>
+    // Menambahkan event listener pada dropdown
+    document.getElementById('guest_type').addEventListener('change', function() {
+        const customGuestTypeContainer = document.getElementById('custom-guest-type-container');
+        const guestType = this.value;
+        
+        // Jika memilih "Jenis Tamu Lainnya", tampilkan input custom
+        if (guestType === "") {
+            customGuestTypeContainer.style.display = 'block';
+        } else {
+            customGuestTypeContainer.style.display = 'none';
+        }
+    });
+</script>
 @endsection

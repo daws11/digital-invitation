@@ -30,12 +30,15 @@ class GuestController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
-            'greeting_message' => 'nullable|string',
+            'phone_number' => 'required|string|max:15',
+            'guest_type' => 'required|string',
+            'custom_guest_type' => 'nullable|string',
         ]);
-
+        $guestType = $request->guest_type === '' ? $request->custom_guest_type : $request->guest_type;
         Guest::create([
             'name' => $request->name,
-            'greeting_message' => $request->greeting_message,
+            'phone_number' => $request->phone_number,
+            'guest_type' => $guestType,
             'slug' => Str::slug($request->name),
         ]);
 

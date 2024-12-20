@@ -11,7 +11,7 @@ class Guest extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'slug', 'attended', 'greeting_message', 'will_attend', 'number_of_guests','photo'];
+    protected $fillable = ['name',  'phone_number', 'guest_type','slug', 'attended', 'greeting_message', 'will_attend', 'number_of_guests','photo'];
 
     // Generate slug otomatis saat membuat atau mengupdate nama
     protected static function boot()
