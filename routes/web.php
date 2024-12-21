@@ -33,6 +33,11 @@ Route::middleware('auth')->group(function () {
     Route::get('/photo/{guestSlug}', [PhotoController::class, 'index'])->name('photo.index');
     Route::post('/photo/store', [PhotoController::class, 'store'])->name('photo.store');
     Route::get('/photo/{guestSlug}/show', [PhotoController::class, 'showPhoto'])->name('photo.show');
+    // Rute untuk ekspor PDF
+    Route::get('/guests/export/pdf', [ExportController::class, 'exportPDF'])->name('guests.export.pdf');
+
+    // Rute untuk ekspor Excel
+    Route::get('/guests/export/excel', [ExportController::class, 'exportExcel'])->name('guests.export.excel');
 
 });
 

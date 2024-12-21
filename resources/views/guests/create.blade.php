@@ -3,29 +3,41 @@
 @section('title', 'Tambah Tamu')
 
 @section('content')
-<div class="bg-primary-light min-h-screen py-8">
+<div class="bg-primary-light min-h-screen py-8 pb-20">
     <div class="container mx-auto px-6">
         <h2 class="text-3xl font-bold text-primary-dark mb-6">Tambah Tamu</h2>
-        
+
+        @if (session('success'))
+            <div class="alert alert-success bg-green-100 text-green-800 p-4 rounded mb-4">
+                {{ session('success') }}
+            </div>
+        @endif
+
+        @if (session('error'))
+            <div class="alert alert-danger bg-red-100 text-red-800 p-4 rounded mb-4">
+                {{ session('error') }}
+            </div>
+        @endif
+
         <form action="{{ route('guests.store') }}" method="POST" class="bg-white p-6 rounded-lg shadow">
             @csrf
             <!-- Input Nama -->
             <div class="mb-4">
                 <label for="name" class="block text-sm font-medium text-primary-dark">Nama Tamu</label>
-                <input type="text" name="name" id="name" class="w-full mt-1 p-2 border border-gray-300 rounded focus:ring-primary-light focus:border-primary-dark" required>
+                <input type="text" name="name" id="name" class="w-full mt-1 p-2 border border-gray-300 rounded focus:ring-primary-light focus:border-primary-dark" >
             </div>
             
            <!-- Input Nomor WA -->
            <div class="mb-4">
                 <label for="phone_number" class="block text-sm font-medium text-primary-dark">Nomor WA</label>
-                <input type="tel" name="phone_number" id="phone_number" class="w-full mt-1 p-2 border border-gray-300 rounded focus:ring-primary-light focus:border-primary-dark" required>
+                <input type="tel" name="phone_number" id="phone_number" class="w-full mt-1 p-2 border border-gray-300 rounded focus:ring-primary-light focus:border-primary-dark" >
             </div>
 
 
            <!-- Dropdown Jenis Tamu -->
            <div class="mb-4">
                 <label for="guest_type" class="block text-sm font-medium text-primary-dark">Jenis Tamu</label>
-                <select name="guest_type" id="guest_type" class="w-full mt-1 p-2 border border-gray-300 rounded focus:ring-primary-light focus:border-primary-dark" required>
+                <select name="guest_type" id="guest_type" class="w-full mt-1 p-2 border border-gray-300 rounded focus:ring-primary-light focus:border-primary-dark" >
                     <option value="VIP">VIP</option>
                     <option value="Regular">Regular</option>
                     <option value="Special">Special</option>
@@ -49,6 +61,8 @@
 
 
 <script>
+    
+
     // Menambahkan event listener pada dropdown
     document.getElementById('guest_type').addEventListener('change', function() {
         const customGuestTypeContainer = document.getElementById('custom-guest-type-container');
