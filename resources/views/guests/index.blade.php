@@ -68,34 +68,6 @@
                                     Aksi
                                     <i class="fa-solid fa-caret-down ml-2"></i>
                                 </button>
-                                <ul class="hidden absolute right-0 bg-white border rounded-lg shadow-md mt-2 text-sm z-50">
-                                    @foreach([
-                                        ['route' => route('guests.show', ['slug' => $guest->slug]), 'icon' => 'fa-eye', 'label' => 'Lihat Halaman'],
-                                        ['route' => route('scan-qr.show'), 'icon' => 'fa-qrcode', 'label' => 'Scan QR'],
-                                        ['route' => route('guests.edit', ['slug' => $guest->slug]), 'icon' => 'fa-pen', 'label' => 'Edit'],
-                                        ['route' => route('photo.index', ['guestSlug' => $guest->slug]), 'icon' => 'fa-camera', 'label' => 'Foto'],
-                                    ] as $action)
-                                    <li>
-                                        <a href="{{ $action['route'] }}" class="block px-4 py-2 text-primary hover:bg-primary-light hover:text-primary-dark">
-                                            <i class="fa-solid {{ $action['icon'] }} mr-2"></i>{{ $action['label'] }}
-                                        </a>
-                                    </li>
-                                    @endforeach
-                                    <li>
-                                        <a href="#" class="block px-4 py-2 text-primary hover:bg-primary-light hover:text-primary-dark view-photo-btn" data-guest-slug="{{ $guest->slug }}">
-                                            <i class="fa-solid fa-film mr-2"></i>Lihat Foto
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <form action="{{ route('guests.destroy', $guest->id) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus tamu ini?')">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="block w-full text-left px-4 py-2 text-danger hover:bg-red-100 hover:text-red-600">
-                                                <i class="fa-solid fa-trash mr-2"></i>Hapus
-                                            </button>
-                                        </form>
-                                    </li>
-                                </ul>
                             </div>
                         </td>
                     </tr>
@@ -115,32 +87,67 @@
     </div>
 </div>
 
+<!-- Dropdown Container -->
+<div id="dropdown-container" class="hidden absolute right-0 bg-white border rounded-lg shadow-md mt-2 text-sm z-50 w-48">
+    <ul>
+        @foreach([
+            ['route' => route('guests.show', ['slug' => $guest->slug]), 'icon' => 'fa-eye', 'label' => 'Lihat Halaman'],
+            ['route' => route('scan-qr.show'), 'icon' => 'fa-qrcode', 'label' => 'Scan QR'],
+            ['route' => route('guests.edit', ['slug' => $guest->slug]), 'icon' => 'fa-pen', 'label' => 'Edit'],
+            ['route' => route('photo.index', ['guestSlug' => $guest->slug]), 'icon' => 'fa-camera', 'label' => 'Foto'],
+        ] as $action)
+        <li>
+            <a href="{{ $action['route'] }}" class="block px-4 py-2 text-primary hover:bg-primary-light hover:text-primary-dark">
+                <i class="fa-solid {{ $action['icon'] }} mr-2"></i>{{ $action['label'] }}
+            </a>
+        </li>
+        @endforeach
+        <li>
+            <a href="#" class="block px-4 py-2 text-primary hover:bg-primary-light hover:text-primary-dark view-photo-btn" data-guest-slug="{{ $guest->slug }}">
+                <i class="fa-solid fa-film mr-2"></i>Lihat Foto
+            </a>
+        </li>
+        <li>
+            <form action="{{ route('guests.destroy', $guest->id) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus tamu ini?')">
+                @csrf
+                @method('DELETE')
+                <button type="submit" class="block w-full text-left px-4 py-2 text-danger hover:bg-red-100 hover:text-red-600">
+                    <i class="fa-solid fa-trash mr-2"></i>Hapus
+                </button>
+            </form>
+        </li>
+    </ul>
+</div>
+
 <script>
-    function toggleDropdown(button) {
-        const dropdown = button.nextElementSibling;
-        dropdown.classList.toggle('hidden');
-    }
+function toggleDropdown(button) {
+    const dropdown = document.getElementById('dropdown-container');
+    const rect = button.getBoundingClientRect();
+    dropdown.style.top = `${rect.bottom + window.scrollY}px`;
+    dropdown.style.left = `${rect.left + window.scrollX}px`;
+    dropdown.classList.toggle('hidden');
+}
 
-    document.querySelectorAll('.view-photo-btn').forEach(button => {
-        button.addEventListener('click', function(e) {
-            e.preventDefault();
-            const guestSlug = e.target.getAttribute('data-guest-slug');
-            fetch(`/photo/${guestSlug}/show`)
-                .then(response => response.json())
-                .then(data => {
-                    if (data.photo_url) {
-                        document.getElementById('modal-photo').src = data.photo_url;
-                        document.getElementById('photoModal').classList.remove('hidden');
-                    } else {
-                        alert('Foto tidak ditemukan.');
-                    }
-                })
-                .catch(error => alert('Gagal mengambil foto: ' + error.message));
-        });
+document.querySelectorAll('.view-photo-btn').forEach(button => {
+    button.addEventListener('click', function(e) {
+        e.preventDefault();
+        const guestSlug = e.target.getAttribute('data-guest-slug');
+        fetch(`/photo/${guestSlug}/show`)
+            .then(response => response.json())
+            .then(data => {
+                if (data.photo_url) {
+                    document.getElementById('modal-photo').src = data.photo_url;
+                    document.getElementById('photoModal').classList.remove('hidden');
+                } else {
+                    alert('Foto tidak ditemukan.');
+                }
+            })
+            .catch(error => alert('Gagal mengambil foto: ' + error.message));
     });
+});
 
-    document.getElementById('close-modal-btn').addEventListener('click', () => {
-        document.getElementById('photoModal').classList.add('hidden');
-    });
+document.getElementById('close-modal-btn').addEventListener('click', () => {
+    document.getElementById('photoModal').classList.add('hidden');
+});
 </script>
 @endsection

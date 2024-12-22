@@ -160,7 +160,7 @@
 
             html5QrCode.start(
                 { deviceId: { exact: currentDeviceId } },  // Menggunakan deviceId kamera yang dipilih
-                { fps: 10, qrbox: 500 },  // Mengatur frame per second dan ukuran kotak pemindaian
+                { fps: 10, qrbox: 200 },  // Mengatur frame per second dan ukuran kotak pemindaian
                 onScanSuccess,
                 onScanFailure
             ).then((stream) => {
