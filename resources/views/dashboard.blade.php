@@ -91,7 +91,7 @@
 
         <!-- Card 4: Jadwal -->
         <div class="bg-primary-dark text-white p-6 rounded-lg shadow-lg flex justify-center items-center transition-shadow duration-300">
-            <a href="{{ route('home') }}" 
+            <a href="{{ route('souvenir.index') }}" 
                class="flex flex-col items-center text-center {{ request()->routeIs('home') ? 'text-white' : 'text-gray-400' }} 
                     hover:text-yellow-300 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:ring-opacity-50 transition-transform duration-200">
                 <span class="text-5xl mb-2">

@@ -16,6 +16,7 @@ function startQRScanner(updateAttendanceUrl) {
             (decodedText) => {
                 if (decodedText === updateAttendanceUrl) {
                     window.location.href = updateAttendanceUrl;
+                    console.log(updateAttendanceUrl);
                 } else {
                     alert("QR code tidak valid untuk tamu ini.");
                 }
