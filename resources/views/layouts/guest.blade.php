@@ -7,7 +7,8 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Laravel') }}</title>
+    <title>Login - Digital Wedding</title>
+    <link rel="shortcut icon" href="{{ asset('favicon.svg') }}" type="image/svg+xml">
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.bunny.net">

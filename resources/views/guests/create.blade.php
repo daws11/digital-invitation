@@ -41,7 +41,7 @@
                     <option value="VIP">VIP</option>
                     <option value="Regular">Regular</option>
                     <option value="Special">Special</option>
-                    <option value="">Jenis tamu lainnya</option>
+                    <option value="">Masukkan Jenis Tamu Baru...</option>
                 </select>
             </div>
 
