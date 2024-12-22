@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\Guest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use Barryvdh\DomPDF\Facade\Pdf;
+use Maatwebsite\Excel\Facades\Excel;
+use Maatwebsite\Excel\Concerns\FromCollection;
 
 class GuestController extends Controller
 {
@@ -183,5 +186,32 @@ class GuestController extends Controller
         ]);
 
         return redirect()->route('guests.show', $slug)->with('success', 'RSVP berhasil diperbarui.');
+    }
+
+    public function exportPDF()
+    {
+        $guests = Guest::all();
+        $pdf = Pdf::loadView('exports.guests-pdf', compact('guests'));
+        return $pdf->download('daftar-tamu.pdf');
+    }
+
+    // Ekspor Excel
+    public function exportExcel()
+    {
+        $guests = Guest::select('name', 'attended', 'guest_type')->get();
+
+        return Excel::download(new class($guests) implements FromCollection {
+            private $guests;
+
+            public function __construct($guests)
+            {
+                $this->guests = $guests;
+            }
+
+            public function collection()
+            {
+                return $this->guests;
+            }
+        }, 'daftar-tamu.xlsx');
     }
 }

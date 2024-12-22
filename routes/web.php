@@ -34,10 +34,10 @@ Route::middleware('auth')->group(function () {
     Route::post('/photo/store', [PhotoController::class, 'store'])->name('photo.store');
     Route::get('/photo/{guestSlug}/show', [PhotoController::class, 'showPhoto'])->name('photo.show');
     // Rute untuk ekspor PDF
-    Route::get('/guests/export/pdf', [ExportController::class, 'exportPDF'])->name('guests.export.pdf');
+    Route::get('/guests/export/pdf', [GuestController::class, 'exportPDF'])->name('guests.exportPDF');
 
     // Rute untuk ekspor Excel
-    Route::get('/guests/export/excel', [ExportController::class, 'exportExcel'])->name('guests.export.excel');
+    Route::get('/guests/export/excel', [GuestController::class, 'exportExcel'])->name('guests.exportExcel');
 
 });
 

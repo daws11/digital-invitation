@@ -27,10 +27,10 @@
         </div>
         <!-- Tombol Ekspor PDF dan Excel -->
         <div class="flex justify-start items-center mb-4">
-            <a href="#" class="px-4 py-2 bg-primary-dark text-white rounded shadow hover:bg-primary focus:ring-2 focus:ring-primary-light mr-2">
+            <a href="{{ route('guests.exportPDF') }}" class="px-4 py-2 bg-primary-dark text-white rounded shadow hover:bg-primary focus:ring-2 focus:ring-primary-light mr-2">
                 Export PDF
             </a>
-            <a href="#" class="px-4 py-2 bg-primary-dark text-white rounded shadow hover:bg-primary focus:ring-2 focus:ring-primary-light">
+            <a href="{{ route('guests.exportExcel') }}" class="px-4 py-2 bg-primary-dark text-white rounded shadow hover:bg-primary focus:ring-2 focus:ring-primary-light">
                 Export Excel
             </a>
         </div>
