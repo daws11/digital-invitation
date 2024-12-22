@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\Guest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use Barryvdh\DomPDF\Facade\Pdf;
+use Maatwebsite\Excel\Facades\Excel;
+use Maatwebsite\Excel\Concerns\FromCollection;
 
 class GuestController extends Controller
 {
@@ -28,19 +31,44 @@ class GuestController extends Controller
     // Menyimpan data tamu
     public function store(Request $request)
     {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'greeting_message' => 'nullable|string',
-        ]);
-
-        Guest::create([
-            'name' => $request->name,
-            'greeting_message' => $request->greeting_message,
-            'slug' => Str::slug($request->name),
-        ]);
-
-        return redirect()->route('home')->with('success', 'Tamu berhasil ditambahkan.');
+        try {
+            $request->validate([
+                'name' => 'required|string|max:255',
+                'phone_number' => 'required|string|max:15',
+                'guest_type' => 'nullable|string',
+                'custom_guest_type' => 'nullable|string',
+            ], [
+                'name.required' => 'Nama tamu wajib diisi.',
+                'name.string' => 'Nama tamu harus berupa teks.',
+                'name.max' => 'Nama tamu tidak boleh lebih dari 255 karakter.',
+                
+                'phone_number.required' => 'Nomor WA wajib diisi.',
+                'phone_number.string' => 'Nomor WA harus berupa teks.',
+                'phone_number.max' => 'Nomor WA tidak boleh lebih dari 15 karakter.',
+           
+                
+                'custom_guest_type.string' => 'Jenis tamu lainnya harus berupa teks.',
+            ]);
+    
+            
+            $guestType = $request->guest_type === '' ? $request->custom_guest_type : $request->guest_type;
+            if (!$guestType) {
+                return redirect()->back()->with('error', 'Jenis tamu lainnya harus diisi');
+            }
+            Guest::create([
+                'name' => $request->name,
+                'phone_number' => $request->phone_number,
+                'guest_type' => $guestType,
+                'slug' => Str::slug($request->name),
+            ]);
+    
+            return redirect()->route('home')->with('success', 'Tamu berhasil ditambahkan.');
+        } catch (\Exception $e) {
+            // Menangkap semua exception dan mengirim pesan error ke session
+            return redirect()->back()->with('error', $e->getMessage());
+        }
     }
+    
 
     // Menampilkan detail tamu berdasarkan slug
     public function show($slug = null)
@@ -77,16 +105,35 @@ class GuestController extends Controller
         // Validasi input
         $request->validate([
             'name' => 'required|string|max:255',
-            'greeting_message' => 'nullable|string',
+            'phone_number' => 'required|string|max:15',
+            'guest_type' => 'nullable|string',
+            'custom_guest_type' => 'nullable|string',
+        ], [
+            'name.required' => 'Nama tamu wajib diisi.',
+            'name.string' => 'Nama tamu harus berupa teks.',
+            'name.max' => 'Nama tamu tidak boleh lebih dari 255 karakter.',
+            
+            'phone_number.required' => 'Nomor WA wajib diisi.',
+            'phone_number.string' => 'Nomor WA harus berupa teks.',
+            'phone_number.max' => 'Nomor WA tidak boleh lebih dari 15 karakter.',
+            
+            
+            'custom_guest_type.string' => 'Jenis tamu lainnya harus berupa teks.',
         ]);
 
         // Cari tamu berdasarkan slug
         $guest = Guest::where('slug', $slug)->firstOrFail();
-
+        $guestType = $request->guest_type === null || $request->guest_type === '' ? $request->custom_guest_type : $request->guest_type;
+        // Cek jika tidak ada jenis tamu yang dipilih
+        if (!$guestType) {
+            return redirect()->back()->with('error', 'Jenis tamu lainnya harus diisi');
+        }
+    
         // Perbarui data tamu
         $guest->update([
             'name' => $request->name,
-            'greeting_message' => $request->greeting_message,
+            'phone_number' => $request->phone_number,
+            'guest_type' => $guestType,
             'slug' => Str::slug($request->name),
         ]);
 
@@ -139,5 +186,32 @@ class GuestController extends Controller
         ]);
 
         return redirect()->route('guests.show', $slug)->with('success', 'RSVP berhasil diperbarui.');
+    }
+
+    public function exportPDF()
+    {
+        $guests = Guest::all();
+        $pdf = Pdf::loadView('exports.guests-pdf', compact('guests'));
+        return $pdf->download('daftar-tamu.pdf');
+    }
+
+    // Ekspor Excel
+    public function exportExcel()
+    {
+        $guests = Guest::select('name', 'attended', 'guest_type')->get();
+
+        return Excel::download(new class($guests) implements FromCollection {
+            private $guests;
+
+            public function __construct($guests)
+            {
+                $this->guests = $guests;
+            }
+
+            public function collection()
+            {
+                return $this->guests;
+            }
+        }, 'daftar-tamu.xlsx');
     }
 }

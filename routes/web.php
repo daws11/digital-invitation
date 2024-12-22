@@ -6,6 +6,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\NavbarController;
 use App\Http\Controllers\ScanQRController;
 use App\Http\Controllers\PhotoController;
+use App\Http\Controllers\SouvenirController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -18,7 +19,8 @@ Route::put('/guests/{slug}/update-greeting', [GuestController::class, 'updateGre
 Route::put('/guests/{slug}/rsvp', [GuestController::class, 'updateRSVP'])->name('guests.updateRSVP');
 
 Route::middleware('auth')->group(function () {
-    Route::get('/dashboard', [HomeController::class, 'dashboard'])->name('dashboard');
+    Route::get('/dashboard', [HomeController::class, 'dashboard'])->name('dashboard');    
+    Route::get('/api/guests', [HomeController::class, 'getGuests']);
     Route::get('/home', [GuestController::class, 'index'])->name('home');
     Route::get('/guests', [GuestController::class, 'index'])->name('guests.index');
     Route::get('/guests/create', [GuestController::class, 'create'])->name('guests.create');
@@ -32,6 +34,15 @@ Route::middleware('auth')->group(function () {
     Route::get('/photo/{guestSlug}', [PhotoController::class, 'index'])->name('photo.index');
     Route::post('/photo/store', [PhotoController::class, 'store'])->name('photo.store');
     Route::get('/photo/{guestSlug}/show', [PhotoController::class, 'showPhoto'])->name('photo.show');
+    // Rute untuk ekspor PDF
+    Route::get('/guests/export/pdf', [GuestController::class, 'exportPDF'])->name('guests.exportPDF');
+    // Rute untuk ekspor Excel
+    Route::get('/guests/export/excel', [GuestController::class, 'exportExcel'])->name('guests.exportExcel');
+
+    // Route untuk sovenir
+    Route::get('guests/souvenir', [SouvenirController::class, 'index'])->name('souvenir.index');
+    Route::put('/guests/{slug}/update-souvenir', [SouvenirController::class, 'updateSouvenir'])->name('guests.updateSouvenir');
+    Route::get('guests/souvenir/scan-qr', [SouvenirController::class, 'showQR'])->name('souvenir.scan-qr');
 
 });
 

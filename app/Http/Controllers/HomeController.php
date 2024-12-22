@@ -22,15 +22,39 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function dashboard()
+    public function dashboard(Request $request)
     {
+        if ($request->ajax()) {
+            $query = $request->get('search');
+            $guests = Guest::select('name', 'will_attend', 'number_of_guests')
+                ->when($query, function ($queryBuilder) use ($query) {
+                    $queryBuilder->where('name', 'LIKE', '%' . $query . '%');
+                })
+                ->get();
+    
+            return response()->json(['guests' => $guests]);
+        }
         $totalGuests = Guest::count(); // Jumlah undangan
         $totalAttended = Guest::where('will_attend', 1)->count(); // Jumlah tamu yang hadir
         $totalNumberOfGuests = Guest::whereNotNull('number_of_guests')->sum('number_of_guests'); // Total tamu yang hadir
 
-        $guests = Guest::select('name', 'will_attend', 'number_of_guests')->get(); // Daftar tamu
+        $guests = Guest::all();
+
 
         return view('dashboard', compact('totalGuests', 'totalAttended', 'totalNumberOfGuests', 'guests'));
     }
+
+    public function getGuests(Request $request)
+    {
+        $query = $request->get('search');
+        $guests = Guest::select('name', 'will_attend', 'number_of_guests')
+            ->when($query, function ($queryBuilder) use ($query) {
+                $queryBuilder->where('name', 'LIKE', '%' . $query . '%');
+            })
+            ->get();
+
+        return response()->json(['guests' => $guests]);
+    }
+
 
 }

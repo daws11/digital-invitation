@@ -3,7 +3,7 @@
 @section('content')
     <div class="container mx-auto p-4 bg-primary-light h-screen">
         <h1 class="text-3xl font-bold text-primary-dark text-center mb-6">
-            Scan QR Code untuk Kehadiran Tamu
+            Scan QR Code untuk menerima souvenir
         </h1>
 
         <!-- Dropdown untuk memilih kamera -->
@@ -21,12 +21,11 @@
     </div>
 
     <!-- Modal untuk Menampilkan Hasil Kehadiran -->
-    <div id="attendance-modal" class="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center hidden">
+    <div id="souvenir-modal" class="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center hidden">
         <div class="bg-white p-8 rounded-lg shadow-xl w-1/3 text-center">
-            <h3 class="text-2xl font-semibold mb-4">Kehadiran Tamu Berhasil Diperbarui!</h3>
+            <h3 class="text-2xl font-semibold mb-4">Pengambilan Souvenir Berhasil!</h3>
             <p id="guest-name" class="text-xl mb-2"></p>
-            <p id="attendance-status" class="text-lg mb-4"></p>
-            <p id="guest-count" class="text-lg"></p>
+            <p id="souvenir-taken" class="text-lg"></p>
             <button id="close-modal" class="mt-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">
                 Tutup
             </button>
@@ -50,15 +49,12 @@
                 const slug = match[1];  // Ambil slug dari URL yang dipindai
 
                 // Menggunakan fetch untuk melakukan request PUT ke server
-                fetch(`/guests/${slug}/update-attendance`, {
+                fetch(`/guests/${slug}/update-souvenir`, {
                     method: 'PUT',
                     headers: {
                         'Content-Type': 'application/json',
                         'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-                    },
-                    body: JSON.stringify({
-                        attended: true
-                    })
+                    }
                 })
                 .then(response => {
                     if (!response.ok) {
@@ -70,11 +66,10 @@
                     if (data.success) {
                         // Tampilkan modal dengan informasi tamu
                         document.getElementById('guest-name').textContent = `Nama Tamu: ${data.guest.name}`;
-                        document.getElementById('attendance-status').textContent = `Kehadiran: ${data.guest.attended ? 'Ya' : 'Tidak'}`;
-                        document.getElementById('guest-count').textContent = `Jumlah Tamu: ${data.guest.number_of_guests}`;
+                        document.getElementById('souvenir-taken').textContent = `Souvenir diambil`;
 
                         // Tampilkan modal
-                        document.getElementById('attendance-modal').classList.remove('hidden');
+                        document.getElementById('souvenir-modal').classList.remove('hidden');
                     } else {
                         alert('Tamu tidak ditemukan!');
                     }
@@ -94,7 +89,7 @@
 
         // Menutup modal
         document.getElementById('close-modal').addEventListener('click', function() {
-            document.getElementById('attendance-modal').classList.add('hidden');
+            document.getElementById('souvenir-modal').classList.add('hidden');
         });
 
         // Mengambil daftar kamera yang tersedia

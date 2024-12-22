@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="container mx-auto p-4 bg-primary-light">
+    <div class="container mx-auto p-4 bg-primary-light min-h-screen">
         <h1 class="text-3xl font-bold text-primary-dark text-center mb-6">Ambil Foto</h1>
 
         <!-- Dropdown untuk memilih perangkat kamera -->
@@ -17,19 +17,19 @@
         </div>
 
         <!-- Tombol untuk mengambil Foto -->
-        <div class="text-center">
-            <button id="capture-btn" class="px-4 py-2 bg-primary-dark text-white rounded shadow hover:bg-primary focus:ring-2 focus:ring-primary-light">
+        <div class="text-center flex justify-center">
+            <button id="capture-btn" class="px-4 py-2 bg-primary-dark text-white rounded shadow" style="display: none;">
                 Ambil Foto
             </button>
         </div>
 
         <!-- Tempat untuk menampilkan hasil Foto -->
-        <div class="flex justify-center mt-4" id="photo-preview-container" style="display: none;">
-            <canvas id="canvas" width="640" height="480"></canvas>
+        <div class="flex justify-center mt-4 " id="photo-preview-container" style="display: none;">
+            <canvas id="canvas" class="border border-gray-300 h-full w-full" width="640" height="480"></canvas>
         </div>
 
         <!-- Tombol Konfirmasi dan Ulangi Foto -->
-        <div id="action-buttons" class="text-center mt-4" style="display: none;">
+        <div id="action-buttons" class="text-center mt-4 mb-28" style="display: none;">
             <button id="confirm-btn" class="px-6 py-2 bg-green-500 text-white rounded hover:bg-green-600">
                 Konfirmasi
             </button>
@@ -58,47 +58,71 @@
         function getCameraDevices() {
             navigator.mediaDevices.enumerateDevices()
                 .then(devices => {
+                    const cameras = devices.filter(device => device.kind === 'videoinput');
                     const cameraSelect = document.getElementById('camera-select');
-                    devices.forEach(device => {
-                        if (device.kind === 'videoinput') {
+                    cameraSelect.innerHTML = '<option value="">Pilih Kamera</option>';
+
+                    // Masukkan kamera yang ditemukan ke dropdown
+                    cameras.forEach(device => {
+                        if (device.label) {
                             const option = document.createElement('option');
                             option.value = device.deviceId;
-                            option.textContent = device.label || `Kamera ${cameraSelect.length + 1}`;
+                            option.text = device.label;
                             cameraSelect.appendChild(option);
+                            document.getElementById('capture-btn').disabled = false;
                         }
                     });
 
                     // Pilih kamera pertama sebagai default
-                    if (cameraSelect.options.length > 1) {
-                        cameraSelect.value = cameraSelect.options[1].value; // Pilih kamera pertama selain default
-                        selectedDeviceId = cameraSelect.value;
-                        startVideoStream(selectedDeviceId);
-                    }
+                    cameraSelect.addEventListener('change', function() {
+                        console.log('Pilihan kamera berubah:', this.value);
+                        if (this.value) {
+                            selectedDeviceId = this.value;
+                            startVideoStream(selectedDeviceId);
+                        }
+                    });
                 })
                 .catch(err => {
                     console.error('Error accessing devices:', err);
+                    alert('Terjadi kesalahan saat mengakses perangkat kamera.');
                 });
         }
 
+        navigator.mediaDevices.getUserMedia({ video: true })
+            .then(stream => {
+                stream.getTracks().forEach(track => track.stop());
+                getCameraDevices();
+            })
+            .catch(err => {
+                console.error('Izin kamera ditolak:', err);
+                alert('Mohon izinkan akses ke kamera untuk menggunakan fitur ini.');
+            });
+
         // Memulai stream video untuk kamera tertentu
         function startVideoStream(deviceId) {
+            console.log('Memulai pemindaian kamera:', deviceId);
             if (videoStream) {
                 videoStream.getTracks().forEach(track => track.stop());
+                
+            }
+            if(deviceId){
+                document.getElementById('capture-btn').style.display = 'block';
+
+                const constraints = {
+                        video: { deviceId: { exact: deviceId } }
+                    };
+                    navigator.mediaDevices.getUserMedia(constraints)
+                        .then(stream => {
+                            videoStream = stream;
+                            document.getElementById('video').srcObject = stream;
+                        })
+                        .catch(err => {
+                            console.error('Error accessing camera:', err);
+                            alert('Mohon izinkan akses ke kamera untuk menggunakan fitur ini.');
+                        });
             }
 
-            const constraints = {
-                video: { deviceId: { exact: deviceId } }
-            };
-
-            navigator.mediaDevices.getUserMedia(constraints)
-                .then(stream => {
-                    videoStream = stream;
-                    document.getElementById('video').srcObject = stream;
-                })
-                .catch(err => {
-                    console.error('Error accessing camera:', err);
-                    alert('Terjadi kesalahan saat mengakses kamera.');
-                });
+           
         }
 
         // Menangani perubahan pada dropdown kamera
