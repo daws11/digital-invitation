@@ -70,7 +70,7 @@
                     if (data.success) {
                         // Tampilkan modal dengan informasi tamu
                         document.getElementById('guest-name').textContent = `Nama Tamu: ${data.guest.name}`;
-                        document.getElementById('attendance-status').textContent = `Kehadiran: ${data.guest.attended ? 'Ya' : 'Tidak'}`;
+                        document.getElementById('attendance-status').textContent = `Kehadiran: ${data.guest.will_attend ? 'Ya' : 'Tidak'}`;
                         document.getElementById('guest-count').textContent = `Jumlah Tamu: ${data.guest.number_of_guests}`;
 
                         // Tampilkan modal
