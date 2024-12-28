@@ -86,7 +86,7 @@
                                         </a>
                                     </li>
                                     <li>
-                                        <form action="{{ route('guests.destroy', $guest->id) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus tamu ini?')">
+                                        <form action="{{ route('guests.destroy', $guest->id) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus tamu dengan nama {{ $guest->name }}?')">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit" class="block w-full text-left px-4 py-2 text-danger hover:bg-red-100 hover:text-red-600">
