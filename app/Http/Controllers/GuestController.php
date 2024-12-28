@@ -60,6 +60,8 @@ class GuestController extends Controller
                 'phone_number' => $request->phone_number,
                 'guest_type' => $guestType,
                 'slug' => Str::slug($request->name),
+                'will_attend' => 1,
+                'number_of_guests' => 1,
             ]);
     
             return redirect()->route('home')->with('success', 'Tamu berhasil ditambahkan.');
