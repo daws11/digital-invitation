@@ -24,11 +24,11 @@
             <span class="text-xs text-white md:text-sm">Scan QR</span>
         </div>
 
-        <!-- Welcome Page -->
-        <a href="{{ route('guests.show', ['slug' => 'tamu-undangan']) }}" 
-           class="text-center flex flex-col items-center {{ request()->routeIs('guests.show') ? 'text-white' : 'text-gray-400' }} hover:text-yellow-300">
-            <span><i class="fa-solid fa-smile"></i></span>
-            <span class="text-xs md:text-sm">Welcome</span>
+        <!-- Tambah Tamu -->
+        <a href="{{ route('guests.create') }}" 
+           class="text-center flex flex-col items-center {{ request()->routeIs('guests.create') ? 'text-white' : 'text-gray-400' }} hover:text-yellow-300">
+            <span><i class="fa-solid fa-user-plus"></i></span>
+            <span class="text-xs md:text-sm">Tamu Baru</span>
         </a>
 
         <!-- Logout -->

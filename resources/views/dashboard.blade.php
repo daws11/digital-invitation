@@ -3,45 +3,6 @@
 @section('title', 'Dashboard')
 
 @section('content')
-<style>
-    /* Custom styles for the Wedding Section (if necessary) */
-    .wedding-image {
-        position: relative;
-    }
-
-    .wedding-image img {
-        border-radius: 10px;
-        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-    }
-
-    .wedding-overlay {
-        position: absolute;
-        inset: 0;
-        background: linear-gradient(to bottom, transparent, rgba(0, 0, 0, 0.7));
-        border-radius: 10px;
-    }
-
-    .wedding-text {
-        position: absolute;
-        inset: 0;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        text-align: center;
-        color: white;
-    }
-
-    .wedding-text h1 {
-        font-size: 2rem;
-        font-weight: bold;
-    }
-
-    .wedding-text p {
-        margin-top: 0.5rem;
-    }
-</style>
-
 <div class="bg-primary-light min-h-screen p-6">
     <div class="relative w-full mx-auto mb-8">
         <!-- Background Image -->
@@ -58,70 +19,70 @@
             <a href="{{ route('home') }}" 
                class="flex flex-col items-center text-center {{ request()->routeIs('home') ? 'text-white' : 'text-gray-400' }} 
                     hover:text-yellow-300 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:ring-opacity-50 transition-transform duration-200">
-                <span class="text-5xl mb-2">
+                <span class="text-5xl mb-2 text-white hover:text-yellow-300">
                     <i class="fa-solid fa-users"></i>
                 </span>
-                <span class="text-lg">Data Tamu</span>
+                <span class="text-lg font-bold text-white">Data Tamu</span>
             </a>
         </div>
 
-        <!-- Card 2: Buku Tamu -->
+        
         <div class="bg-primary-dark text-white p-6 rounded-lg shadow-lg flex justify-center items-center transition-shadow duration-300">
             <a href="{{ route('home') }}" 
                class="flex flex-col items-center text-center {{ request()->routeIs('home') ? 'text-white' : 'text-gray-400' }} 
                     hover:text-yellow-300 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:ring-opacity-50 transition-transform duration-200">
-                <span class="text-5xl mb-2">
+                <span class="text-5xl mb-2 text-white hover:text-yellow-300">
                     <i class="fa-solid fa-book"></i>
                 </span>
-                <span class="text-lg">Kehadiran</span>
+                <span class="text-lg font-bold text-white">Kehadiran</span>
             </a>
         </div>
 
-        <!-- Card 3: Laporan -->
+        
         <div class="bg-primary-dark text-white p-6 rounded-lg shadow-lg flex justify-center items-center transition-shadow duration-300">
-            <a href="{{ route('home') }}" 
-               class="flex flex-col items-center text-center {{ request()->routeIs('home') ? 'text-white' : 'text-gray-400' }} 
-                    hover:text-yellow-300 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:ring-opacity-50 transition-transform duration-200">
-                <span class="text-5xl mb-2">
-                    <i class="fa-solid fa-qrcode"></i>
-                </span>
-                <span class="text-lg">Check In</span>
+            <a href="{{ route('scan-qr.show') }}" 
+               class="flex flex-col items-center text-center {{ request()->routeIs('scan-qr.show') ? 'text-white' : 'text-gray-400' }} 
+                hover:text-yellow-300 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:ring-opacity-50 transition-transform duration-200">
+            <span class="text-5xl mb-2 text-white hover:text-yellow-300">
+                <i class="fa-solid fa-qrcode"></i>
+            </span>
+            <span class="text-lg font-bold text-white">Check In</span>
             </a>
         </div>
 
-        <!-- Card 4: Jadwal -->
+        
         <div class="bg-primary-dark text-white p-6 rounded-lg shadow-lg flex justify-center items-center transition-shadow duration-300">
             <a href="{{ route('souvenir.index') }}" 
                class="flex flex-col items-center text-center {{ request()->routeIs('home') ? 'text-white' : 'text-gray-400' }} 
                     hover:text-yellow-300 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:ring-opacity-50 transition-transform duration-200">
-                <span class="text-5xl mb-2">
+                <span class="text-5xl mb-2 text-white hover:text-yellow-300">
                     <i class="fa-solid fa-hand-holding-heart"></i>
                 </span>
-                <span class="text-lg">Souvenirs</span>
+                <span class="text-lg font-bold text-white">Souvenirs</span>
             </a>
         </div>
 
-        <!-- Card 5: Pengaturan -->
+        
         <div class="bg-primary-dark text-white p-6 rounded-lg shadow-lg flex justify-center items-center transition-shadow duration-300">
-            <a href="{{ route('home') }}" 
-               class="flex flex-col items-center text-center {{ request()->routeIs('home') ? 'text-white' : 'text-gray-400' }} 
-                    hover:text-yellow-300 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:ring-opacity-50 transition-transform duration-200">
-                <span class="text-5xl mb-2">
-                    <i class="fa-solid fa-comments"></i>
-                </span>
-                <span class="text-lg">RSVP</span>
+            <a href="{{ route('guests.show', ['slug' => 'rsvp']) }}" 
+               class="flex flex-col items-center text-center {{ request()->routeIs('guests.show') ? 'text-white' : 'text-gray-400' }} 
+                hover:text-yellow-300 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:ring-opacity-50 transition-transform duration-200">
+            <span class="text-5xl mb-2 text-white hover:text-yellow-300">
+                <i class="fa-solid fa-comments"></i>
+            </span>
+            <span class="text-lg font-bold text-white">RSVP</span>
             </a>
         </div>
 
-        <!-- Card 6: Logout -->
+        
         <div class="bg-primary-dark text-white p-6 rounded-lg shadow-lg flex justify-center items-center transition-shadow duration-300">
             <a href="{{ route('guests.show', ['slug' => 'tamu-undangan']) }}" 
                class="flex flex-col items-center text-center {{ request()->routeIs('guests.show') ? 'text-white' : 'text-gray-400' }} 
                     hover:text-yellow-300 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:ring-opacity-50 transition-transform duration-200">
-                <span class="text-5xl mb-2">
+                <span class="text-5xl mb-2 text-white hover:text-yellow-300">
                     <i class="fa-solid fa-desktop"></i>
                 </span>
-                <span class="text-lg">Welcome</span>
+                <span class="text-lg font-bold text-white">Welcome</span>
             </a>
         </div>
     </div>
