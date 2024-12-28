@@ -37,6 +37,11 @@
 
         <!-- Tabel Tamu -->
         <div class="bg-white shadow">
+        @if($guests->isEmpty())
+            <div class="p-6 text-center text-primary-dark font-semibold">
+                Tidak ada tamu.
+            </div>
+        @else
             <table class="min-w-full bg-white">
                 <thead class="bg-primary-dark text-primary-light">
                     <tr>
@@ -96,6 +101,7 @@
                     @endforeach
                 </tbody>
             </table>
+        @endif
         </div>
     </div>
 </div>

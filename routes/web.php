@@ -27,7 +27,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/guests', [GuestController::class, 'store'])->name('guests.store');
     Route::get('/guests/{slug}/edit', [GuestController::class, 'edit'])->name('guests.edit');
     Route::put('/guests/{guest}', [GuestController::class, 'update'])->name('guests.update');
-    Route::delete('/guests/{guest}', [GuestController::class, 'destroy'])->name('guests.destroy');
+    Route::delete('/guests/{id}', [GuestController::class, 'destroy'])->name('guests.destroy');
     Route::get('scan-qr', [ScanQRController::class, 'show'])->name('scan-qr.show');
     Route::put('/guests/{slug}/update-attendance', [ScanQRController::class, 'updateAttendance'])->name('guests.updateAttendance');
     Route::post('scan-qr/update-attendance', [ScanQRController::class, 'updateAttendance'])->name('scan-qr.updateAttendance');
