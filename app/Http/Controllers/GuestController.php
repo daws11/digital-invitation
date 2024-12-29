@@ -155,6 +155,18 @@ class GuestController extends Controller
         return redirect()->route('guests.index')->with('error', 'Tamu tidak ditemukan.');
     }
 
+    public function destroyBySlug($slug)
+    {
+        $guest = Guest::where('slug', $slug)->firstOrFail();
+        
+        if ($guest) {
+            $guest->delete();
+            return redirect()->route('guests.index')->with('success', 'Tamu berhasil dihapus.');
+        }
+
+        return redirect()->route('guests.index')->with('error', 'Tamu tidak ditemukan.');
+    }
+
 
     // Memperbarui ucapan tamu berdasarkan slug
     public function updateGreeting(Request $request, $slug)

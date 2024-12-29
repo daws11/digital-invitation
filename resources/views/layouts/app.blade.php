@@ -19,7 +19,7 @@
 
     <!-- Font Awesome -->
     <script src="https://kit.fontawesome.com/811cf44b8d.js" crossorigin="anonymous"></script>
-
+    <script src="https://cdn.jsdelivr.net/npm/webcam-easy@1.0.5/dist/webcam-easy.min.js"></script>
     <style>
         /* Layout Optimization for Mobile */
         body {
