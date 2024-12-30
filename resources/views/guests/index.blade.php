@@ -5,7 +5,7 @@
 @section('content')
 <div class="bg-primary-light min-h-screen py-8 pb-20">
     <!-- Statistik -->
-    <div class="grid grid-cols-3 gap-6 mx-8 mb-6">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mx-8 mb-6">
         @foreach([
             ['title' => 'Total Undangan', 'value' => $totalGuests],
             ['title' => 'Jumlah Hadir', 'value' => $totalAttended],
@@ -43,7 +43,7 @@
                 <button type="submit" class="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary-dark transition focus:ring-2 focus:ring-primary-light" aria-label="Cari">Cari</button>
             </form>
             </div>
-            <table class="min-w-full bg-white">
+            <table class="min-w-full bg-white relative">
             <thead class="bg-primary-dark text-primary-light">
                 <tr>
                         <th class="py-3 px-4 border-b text-start">Nama</th>
@@ -74,6 +74,12 @@
                     @endforeach
                 </tbody>
             </table>
+            <!-- Dropdown Container -->
+            <div id="dropdown-container" class="hidden absolute right-0 bg-white border rounded-lg shadow-md mt-2 text-sm z-50 w-48">
+                <ul id="dropdown-actions">
+                    <!-- Actions will be dynamically inserted here -->
+                </ul>
+            </div>
         </div>
     </div>
 </div>
@@ -87,13 +93,6 @@
     </div>
 </div>
 
-<!-- Dropdown Container -->
-<div id="dropdown-container" class="hidden absolute right-0 bg-white border rounded-lg shadow-md mt-2 text-sm z-50 w-48">
-    <ul id="dropdown-actions">
-        <!-- Actions will be dynamically inserted here -->
-    </ul>
-</div>
-
 <script>
 function toggleDropdown(button, guestSlug) {
     const dropdown = document.getElementById('dropdown-container');
@@ -103,8 +102,8 @@ function toggleDropdown(button, guestSlug) {
     dropdown.classList.toggle('hidden');
 
     const actions = [
-        { route: `/guests/${guestSlug}`, icon: 'fa-eye', label: 'Lihat Halaman' },
-        { route: '/scan-qr', icon: 'fa-qrcode', label: 'Scan QR' },
+        { route: `/${guestSlug}`, icon: 'fa-eye', label: 'Lihat Halaman' },
+        { route: '{{ route('scan-qr.show') }}', icon: 'fa-qrcode', label: 'Scan QR' },
         { route: `/guests/${guestSlug}/edit`, icon: 'fa-pen', label: 'Edit' },
         { route: `/photo/${guestSlug}`, icon: 'fa-camera', label: 'Foto' },
         { route: '#', icon: 'fa-film', label: 'Lihat Foto', class: 'view-photo-btn', data: { guestSlug } },
@@ -135,28 +134,35 @@ function toggleDropdown(button, guestSlug) {
             `;
         }
     }).join('');
-}
 
-document.querySelectorAll('.view-photo-btn').forEach(button => {
-    button.addEventListener('click', function(e) {
-        e.preventDefault();
-        const guestSlug = e.target.getAttribute('data-guest-slug');
-        fetch(`/photo/${guestSlug}/show`)
-            .then(response => response.json())
-            .then(data => {
-                if (data.photo_url) {
-                    document.getElementById('modal-photo').src = data.photo_url;
-                    document.getElementById('photoModal').classList.remove('hidden');
-                } else {
-                    alert('Foto tidak ditemukan.');
-                }
-            })
-            .catch(error => alert('Gagal mengambil foto: ' + error.message));
+    document.querySelectorAll('.view-photo-btn').forEach(button => {
+        button.addEventListener('click', function(e) {
+            e.preventDefault();
+            const guestSlug = e.target.getAttribute('data-guest-slug');
+            fetch(`/photo/${guestSlug}/show`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.photo_url) {
+                        document.getElementById('modal-photo').src = data.photo_url;
+                        document.getElementById('photoModal').classList.remove('hidden');
+                    } else {
+                        alert('Foto tidak ditemukan.');
+                    }
+                })
+                .catch(error => alert('Gagal mengambil foto: ' + error.message));
+        });
     });
-});
+}
 
 document.getElementById('close-modal-btn').addEventListener('click', () => {
     document.getElementById('photoModal').classList.add('hidden');
+});
+
+document.addEventListener('click', function(event) {
+    const dropdown = document.getElementById('dropdown-container');
+    if (!dropdown.contains(event.target) && !event.target.closest('button')) {
+        dropdown.classList.add('hidden');
+    }
 });
 </script>
 @endsection

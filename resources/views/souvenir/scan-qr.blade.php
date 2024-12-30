@@ -22,7 +22,7 @@
 
     <!-- Modal untuk Menampilkan Hasil Kehadiran -->
     <div id="souvenir-modal" class="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center hidden">
-        <div class="bg-white p-8 rounded-lg shadow-xl w-1/3 text-center">
+        <div class="bg-white p-8 rounded-lg shadow-xl w-full max-w-md mx-4 text-center">
             <h3 class="text-2xl font-semibold mb-4">Pengambilan Souvenir Berhasil!</h3>
             <p id="guest-name" class="text-xl mb-2"></p>
             <p id="souvenir-taken" class="text-lg"></p>
@@ -155,7 +155,7 @@
 
             html5QrCode.start(
                 { deviceId: { exact: currentDeviceId } },  // Menggunakan deviceId kamera yang dipilih
-                { fps: 10, qrbox: 500 },  // Mengatur frame per second dan ukuran kotak pemindaian
+                { fps: 10, qrbox: 200 },  // Mengatur frame per second dan ukuran kotak pemindaian
                 onScanSuccess,
                 onScanFailure
             ).then((stream) => {
