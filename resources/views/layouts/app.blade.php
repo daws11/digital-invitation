@@ -33,6 +33,7 @@
     <div id="app">
         <!-- Main Content -->
         <main> <!-- Extra space for navbar -->
+            @include('components.navbarTop')
             @yield('content')
         </main>
 

@@ -31,16 +31,12 @@
             <span class="text-xs md:text-sm">Tamu Baru</span>
         </a>
 
-        <!-- Logout -->
-        <a href="{{ route('logout') }}" 
-           class="text-center flex flex-col items-center text-gray-400 hover:text-yellow-300"
-           onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-            <span><i class="fa-solid fa-right-from-bracket"></i></span>
-            <span class="text-xs md:text-sm">Logout</span>
+          <!-- Settings -->
+          <a href="#" 
+           class="text-center flex flex-col items-center {{ request()->routeIs('settings') ? 'text-white' : 'text-gray-400' }} hover:text-yellow-300">
+            <span><i class="fas fa-cog"></i></span>
+            <span class="text-xs md:text-sm">Setting</span>
         </a>
-        <form id="logout-form" action="{{ route('logout') }}" method="POST" class="hidden">
-            @csrf
-        </form>
     </div>
 </nav>
 <style>
