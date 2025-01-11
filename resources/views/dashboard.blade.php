@@ -162,17 +162,14 @@
             </div>
             <!-- Body -->
             <div class="p-6">
-                <form id="search-form" class="flex items-center gap-2">
-                    <input type="text" id="search-input" placeholder="Cari tamu..." class="px-4 py-2 border rounded-lg w-full focus:ring-2 focus:ring-primary outline-none">
-                    <button type="submit" class="px-4 py-2 bg-primary text-white rounded hover:bg-primary-dark transition">Cari</button>
+                <form id="search-form-modal" class="flex items-center gap-2">
+                    <input type="text" id="search-input-modal" placeholder="Cari tamu..." class="px-4 py-2 border rounded-lg w-full focus:ring-2 focus:ring-primary outline-none">
                 </form>
                 <div class="m-2 mt-4">
                     <table id="search-results" class="min-w-full bg-white border border-gray-200">
                         <thead>
                             <tr class="bg-primary-light border-b text-primary-dark">
                                 <th class="py-2 px-4 text-left font-medium">Nama</th>
-                                <th class="py-2 px-4 text-left font-medium text-center">Kehadiran</th>
-                                <th class="py-2 px-4 text-left font-medium text-center">Jumlah Tamu</th>
                             </tr>
                         </thead>
                         <tbody id="search-results-body">

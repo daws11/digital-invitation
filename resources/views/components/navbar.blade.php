@@ -32,8 +32,7 @@
         </a>
 
           <!-- Settings -->
-          <a href="#" 
-           class="text-center flex flex-col items-center {{ request()->routeIs('settings') ? 'text-white' : 'text-gray-400' }} hover:text-yellow-300">
+          <a href="{{ route('settings.index') }}" class="text-center flex flex-col items-center {{ request()->routeIs('settings') ? 'text-white' : 'text-gray-400' }} hover:text-yellow-300">
             <span><i class="fas fa-cog"></i></span>
             <span class="text-xs md:text-sm">Setting</span>
         </a>

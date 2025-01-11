@@ -24,7 +24,7 @@
                     </li>
                     <!-- Setting -->
                     <li>
-                        <a href="#" class="block px-4 py-2 text-sm text-primary-dark hover:bg-gray-100">
+                        <a href="{{ route('settings.index') }}" class="block px-4 py-2 text-sm text-primary-dark hover:bg-gray-100">
                             <i class="fas fa-cog mr-2"></i> Setting
                         </a>
                     </li>
