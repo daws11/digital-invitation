@@ -7,6 +7,7 @@ use App\Http\Controllers\NavbarController;
 use App\Http\Controllers\ScanQRController;
 use App\Http\Controllers\PhotoController;
 use App\Http\Controllers\SouvenirController;
+use App\Http\Controllers\SettingsController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -43,6 +44,7 @@ Route::middleware('auth')->group(function () {
     Route::get('guests/souvenir', [SouvenirController::class, 'index'])->name('souvenir.index');
     Route::put('/guests/{slug}/update-souvenir', [SouvenirController::class, 'updateSouvenir'])->name('guests.updateSouvenir');
     Route::get('guests/souvenir/scan-qr', [SouvenirController::class, 'showQR'])->name('souvenir.scan-qr');
+    Route::get('/settings', [SettingsController::class, 'index'])->name('settings.index');
 
 });
 
