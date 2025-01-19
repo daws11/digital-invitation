@@ -8,6 +8,7 @@ use Illuminate\Support\Str;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Maatwebsite\Excel\Facades\Excel;
 use Maatwebsite\Excel\Concerns\FromCollection;
+use Illuminate\Support\Facades\Log;
 
 class GuestController extends Controller
 {
@@ -51,7 +52,9 @@ class GuestController extends Controller
             ]);
     
             
-            $guestType = $request->guest_type === '' ? $request->custom_guest_type : $request->guest_type;
+            $guestType = !$request->guest_type ? $request->custom_guest_type : $request->guest_type;
+            Log::info('Guest type resolved', ['guest_type' => $guestType]);
+
             if (!$guestType) {
                 return redirect()->back()->with('error', 'Jenis tamu lainnya harus diisi');
             }
