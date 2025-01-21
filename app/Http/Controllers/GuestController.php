@@ -22,6 +22,16 @@ class GuestController extends Controller
         return view('guests.index', compact('totalGuests', 'totalAttended', 'totalNumberOfGuests', 'guests'));
     }
 
+    public function showDataTamu()
+    {
+        $guests = Guest::all();
+        $totalGuests = Guest::count(); 
+        $totalAttended = Guest::where('will_attend', 1)->count(); 
+        $totalNumberOfGuests = Guest::whereNotNull('number_of_guests')->sum('number_of_guests'); 
+
+        return view('guests.guest', compact('totalGuests', 'totalAttended', 'totalNumberOfGuests', 'guests'));
+    }
+
     // Menampilkan form tambah tamu
     public function create()
     {
@@ -45,25 +55,24 @@ class GuestController extends Controller
                 'phone_number.required' => 'Nomor WA wajib diisi.',
                 'phone_number.string' => 'Nomor WA harus berupa teks.',
                 'phone_number.max' => 'Nomor WA tidak boleh lebih dari 15 karakter.',
-           
                 
                 'custom_guest_type.string' => 'Jenis tamu lainnya harus berupa teks.',
             ]);
-    
-            
+
             $guestType = $request->guest_type === '' ? $request->custom_guest_type : $request->guest_type;
             if (!$guestType) {
                 return redirect()->back()->with('error', 'Jenis tamu lainnya harus diisi');
             }
+
             Guest::create([
                 'name' => $request->name,
                 'phone_number' => $request->phone_number,
                 'guest_type' => $guestType,
                 'slug' => Str::slug($request->name),
-                'will_attend' => 1,
-                'number_of_guests' => 1,
+                'will_attend' => 0,
+                'number_of_guests' => 0,
             ]);
-    
+
             return redirect()->route('home')->with('success', 'Tamu berhasil ditambahkan.');
         } catch (\Exception $e) {
             // Menangkap semua exception dan mengirim pesan error ke session

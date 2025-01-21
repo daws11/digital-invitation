@@ -15,7 +15,7 @@
             <span class="text-xs md:text-sm">Data Tamu</span>
         </a>
 
-        <!-- Scan QR -->
+    
         <!-- Scan QR -->
         <div class="text-center flex flex-col items-center">
             <a href="{{ route('scan-qr.show') }}" class="w-16 h-16 bg-orange-400 text-white rounded-full shadow-lg hover:bg-orange-500 flex items-center justify-center focus:outline-none focus:ring-4 focus:ring-orange-300 -mt-8">

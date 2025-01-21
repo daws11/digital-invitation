@@ -23,6 +23,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/dashboard', [HomeController::class, 'dashboard'])->name('dashboard');    
     Route::get('/api/guests', [HomeController::class, 'getGuests']);
     Route::get('/home', [GuestController::class, 'index'])->name('home');
+    Route::get('/ShowTamu', [GuestController::class, 'showDataTamu'])->name('showTamu');
     Route::get('/guests', [GuestController::class, 'index'])->name('guests.index');
     Route::get('/guests/create', [GuestController::class, 'create'])->name('guests.create');
     Route::post('/guests', [GuestController::class, 'store'])->name('guests.store');
