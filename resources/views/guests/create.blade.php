@@ -33,7 +33,6 @@
                 <input type="tel" name="phone_number" id="phone_number" class="w-full mt-1 p-2 border border-gray-300 rounded focus:ring-primary-light focus:border-primary-dark" >
             </div>
 
-
            <!-- Dropdown Jenis Tamu -->
            <div class="mb-4">
                 <label for="guest_type" class="block text-sm font-medium text-primary-dark">Jenis Tamu</label>
@@ -59,10 +58,7 @@
     </div>
 </div>
 
-
 <script>
-    
-
     // Menambahkan event listener pada dropdown
     document.getElementById('guest_type').addEventListener('change', function() {
         const customGuestTypeContainer = document.getElementById('custom-guest-type-container');

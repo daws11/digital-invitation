@@ -1,29 +1,26 @@
 @extends('layouts.app')
 
 @section('title', 'Daftar Tamu')
-
+<!-- route data tamu-->
 @section('content')
 <div class="bg-primary-light min-h-screen py-8 pb-20">
     <!-- Statistik -->
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mx-8 mb-6 py-14">
+    <div class="grid grid-cols-3 gap-6 mx-8 mb-6 mt-14">
         @foreach([
-            ['title' => 'Total Undangan', 'value' => $totalGuests],
-            ['title' => 'Jumlah Hadir', 'value' => $totalAttended],
-            ['title' => 'Jumlah Tamu', 'value' => $totalNumberOfGuests],
+            ['title' => 'Undangan', 'value' => $totalGuests],
+            ['title' => 'Hadir', 'value' => $totalAttended],
+            ['title' => 'Tdk Hadir', 'value' => $totalGuests - $totalAttended],
         ] as $stat)
         <div class="p-4 bg-primary-dark text-white rounded-lg shadow hover:shadow-lg transition-shadow duration-300">
-            <h2 class="text-lg font-semibold">{{ $stat['title'] }}</h2>
-            <p class="text-4xl font-bold">{{ $stat['value'] }}</p>
+            <p class="text-2xl font-bold text-center">{{ $stat['value'] }}</p>    
+            <h4 class="text-sm font-semibold text-center">{{ $stat['title'] }}</h4>   
         </div>
         @endforeach
     </div>
 
     <div class="container mx-auto px-6 pb-20">
         <div class="flex justify-between items-center mb-8">
-            <h2 class="text-3xl font-bold text-primary-dark">Daftar Tamu</h2>
-            <a href="{{ route('guests.create') }}" class="px-4 py-2 bg-primary-dark text-white rounded shadow hover:bg-primary focus:ring-2 focus:ring-primary-light">
-                Tambah Tamu
-            </a>
+            <h1 class="text-3xl font-bold text-primary-dark">Kehadiran</h1>
         </div>
         <!-- Tombol Ekspor PDF dan Excel -->
         <div class="flex justify-start items-center mb-4">
@@ -47,28 +44,28 @@
             <thead class="bg-primary-dark text-primary-light">
                 <tr>
                         <th class="py-3 px-4 border-b text-start">Nama</th>
-                        <th class="py-3 px-4 border-b text-start">Kehadiran</th>
-                        <th class="py-3 px-4 border-b">Aksi</th>
+                        <th class="py-3 px-2 border-b">
+                        <a href="{{ route('guests.create') }}" class="px-2 py-2 bg-primary-white text-bg-primary rounded shadow hover:bg-primary focus:ring-2 focus:ring-primary-light">
+                            <i class="fa-solid fa-user-plus"></i>
+                        </a>
+                        </th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach($guests as $guest)
                     <tr class="hover:bg-primary-light/50 transition-colors duration-200">
-                        <td class="py-3 px-4 border-b text-primary-dark">{{ $guest->name }}</td>
-                        <td class="py-3 px-4 border-b">
-                            @if ($guest->attended)
-                                <span class="text-green-600 font-semibold">Datang</span>
+                        <td class="py-3 px-4 border-b text-primary-dark">{{ $guest->name }}<br>
+                        <span class="text-xs text-gray-500">
+                            {{ $guest->phone_number }} | {{ $guest->guest_type }} | 
+                            @if($guest->attended)
+                                <span class="bg-green-100 text-green-500">hadir</span>
                             @else
-                                <span class="text-danger font-semibold">Belum Datang</span>
+                                <span class="bg-red-100 text-red-500">tdk hadir</span>
                             @endif
+                        </span>
                         </td>
                         <td class="py-3 px-4 border-b text-center relative">
-                            <div class="relative inline-block">
-                                <button onclick="toggleDropdown(this, '{{ $guest->slug }}')" class="px-3 py-1 bg-primary text-white rounded shadow hover:bg-primary-dark focus:ring-2 focus:ring-primary-light">
-                                    Aksi
-                                    <i class="fa-solid fa-caret-down ml-2"></i>
-                                </button>
-                            </div>
+                            <div class="relative inline-block text-xs text-gray-500">{{ $guest->updated_at }}</div>
                         </td>
                     </tr>
                     @endforeach
@@ -84,85 +81,4 @@
     </div>
 </div>
 
-<!-- Modal Foto -->
-<div id="photoModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden">
-    <div class="bg-white p-6 rounded shadow-lg w-96">
-        <h2 class="text-2xl font-bold mb-4">Foto Tamu</h2>
-        <img id="modal-photo" src="" alt="Foto Tamu" class="w-full h-auto mb-4">
-        <button id="close-modal-btn" class="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600">Tutup</button>
-    </div>
-</div>
-
-<script>
-function toggleDropdown(button, guestSlug) {
-    const dropdown = document.getElementById('dropdown-container');
-    const rect = button.getBoundingClientRect();
-    dropdown.style.top = `${rect.bottom + window.scrollY}px`;
-    dropdown.style.left = `${rect.left + window.scrollX}px`;
-    dropdown.classList.toggle('hidden');
-
-    const actions = [
-        { route: `/${guestSlug}`, icon: 'fa-eye', label: 'Lihat Halaman' },
-        { route: '{{ route('scan-qr.show') }}', icon: 'fa-qrcode', label: 'Scan QR' },
-        { route: `/guests/${guestSlug}/edit`, icon: 'fa-pen', label: 'Edit' },
-        { route: `/photo/${guestSlug}`, icon: 'fa-camera', label: 'Foto' },
-        { route: '#', icon: 'fa-film', label: 'Lihat Foto', class: 'view-photo-btn', data: { guestSlug } },
-        { route: `/guests/${guestSlug}`, icon: 'fa-trash', label: 'Hapus', method: 'DELETE' }
-    ];
-
-    const dropdownActions = document.getElementById('dropdown-actions');
-    dropdownActions.innerHTML = actions.map(action => {
-        if (action.method) {
-            return `
-                <li>
-                    <form action="${action.route}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus tamu ini?')">
-                        @csrf
-                        @method('${action.method}')
-                        <button type="submit" class="block w-full text-left px-4 py-2 text-danger hover:bg-red-100 hover:text-red-600">
-                            <i class="fa-solid ${action.icon} mr-2"></i>${action.label}
-                        </button>
-                    </form>
-                </li>
-            `;
-        } else {
-            return `
-                <li>
-                    <a href="${action.route}" class="block px-4 py-2 text-primary hover:bg-primary-light hover:text-primary-dark ${action.class || ''}" ${action.data ? `data-guest-slug="${action.data.guestSlug}"` : ''}>
-                        <i class="fa-solid ${action.icon} mr-2"></i>${action.label}
-                    </a>
-                </li>
-            `;
-        }
-    }).join('');
-
-    document.querySelectorAll('.view-photo-btn').forEach(button => {
-        button.addEventListener('click', function(e) {
-            e.preventDefault();
-            const guestSlug = e.target.getAttribute('data-guest-slug');
-            fetch(`/photo/${guestSlug}/show`)
-                .then(response => response.json())
-                .then(data => {
-                    if (data.photo_url) {
-                        document.getElementById('modal-photo').src = data.photo_url;
-                        document.getElementById('photoModal').classList.remove('hidden');
-                    } else {
-                        alert('Foto tidak ditemukan.');
-                    }
-                })
-                .catch(error => alert('Gagal mengambil foto: ' + error.message));
-        });
-    });
-}
-
-document.getElementById('close-modal-btn').addEventListener('click', () => {
-    document.getElementById('photoModal').classList.add('hidden');
-});
-
-document.addEventListener('click', function(event) {
-    const dropdown = document.getElementById('dropdown-container');
-    if (!dropdown.contains(event.target) && !event.target.closest('button')) {
-        dropdown.classList.add('hidden');
-    }
-});
-</script>
 @endsection
