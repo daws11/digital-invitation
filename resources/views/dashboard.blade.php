@@ -138,6 +138,9 @@
                 @endforelse
             </tbody>
         </table>
+        <div class="m-4">
+            {{ $guests->links() }}
+        </div>
     </div>
 
     <!-- Modal Pop-up -->

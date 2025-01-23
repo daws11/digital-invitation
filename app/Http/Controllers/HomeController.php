@@ -30,17 +30,16 @@ class HomeController extends Controller
                 ->when($query, function ($queryBuilder) use ($query) {
                     $queryBuilder->where('name', 'LIKE', '%' . $query . '%');
                 })
-                ->get();
-    
+                ->paginate(10); // Use pagination
+        
             return response()->json(['guests' => $guests]);
         }
         $totalGuests = Guest::count(); // Jumlah undangan
         $totalAttended = Guest::where('will_attend', 1)->count(); // Jumlah tamu yang hadir
         $totalNumberOfGuests = Guest::whereNotNull('number_of_guests')->sum('number_of_guests'); // Total tamu yang hadir
-
-        $guests = Guest::all();
-
-
+    
+        $guests = Guest::paginate(10); // Use pagination
+    
         return view('dashboard', compact('totalGuests', 'totalAttended', 'totalNumberOfGuests', 'guests'));
     }
 

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Guest;
+use App\Imports\GuestsImport;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Barryvdh\DomPDF\Facade\Pdf;
@@ -13,25 +14,37 @@ use Illuminate\Support\Facades\Log;
 class GuestController extends Controller
 {
     // Menampilkan daftar tamu
-    public function index()
+    public function index(Request $request)
     {
-        $guests = Guest::all();
+        $query = $request->input('search');
+        $guests = Guest::when($query, function ($queryBuilder) use ($query) {
+            $queryBuilder->where('name', 'LIKE', '%' . $query . '%')
+                         ->orWhere('phone_number', 'LIKE', '%' . $query . '%')
+                         ->orWhere('guest_type', 'LIKE', '%' . $query . '%');
+        })->paginate(10);
+    
         $totalGuests = Guest::count(); 
         $totalAttended = Guest::where('will_attend', 1)->count(); 
         $totalNumberOfGuests = Guest::whereNotNull('number_of_guests')->sum('number_of_guests'); 
-
+    
         return view('guests.index', compact('totalGuests', 'totalAttended', 'totalNumberOfGuests', 'guests'));
     }
 
-    public function showDataTamu()
+    public function showDataTamu(Request $request)
     {
-        $guests = Guest::all();
+        $query = $request->input('search');
+        $guests = Guest::when($query, function ($queryBuilder) use ($query) {
+            $queryBuilder->where('name', 'LIKE', '%' . $query . '%')
+                        ->orWhere('phone_number', 'LIKE', '%' . $query . '%')
+                        ->orWhere('guest_type', 'LIKE', '%' . $query . '%');
+        })->paginate(10);
+
         $totalGuests = Guest::count(); 
         $totalAttended = Guest::where('will_attend', 1)->count(); 
         $totalNumberOfGuests = Guest::whereNotNull('number_of_guests')->sum('number_of_guests'); 
 
         return view('guests.guest', compact('totalGuests', 'totalAttended', 'totalNumberOfGuests', 'guests'));
-    }
+}
 
     // Menampilkan form tambah tamu
     public function create()
@@ -241,5 +254,20 @@ class GuestController extends Controller
                 return $this->guests;
             }
         }, 'daftar-tamu.xlsx');
+    }
+
+    public function import(Request $request)
+    {
+        $request->validate([
+            'guest_file' => 'required|mimes:xls,xlsx,csv',
+        ]);
+
+        try {
+            Excel::import(new GuestsImport, $request->file('guest_file'));
+
+            return redirect()->route('guests.index')->with('success', 'Tamu berhasil diimpor.');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Terjadi kesalahan saat mengimpor tamu: ' . $e->getMessage());
+        }
     }
 }

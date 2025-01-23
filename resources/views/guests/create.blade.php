@@ -19,6 +19,16 @@
             </div>
         @endif
 
+        <form action="{{ route('guests.import') }}" method="POST" enctype="multipart/form-data" class="bg-white p-6 rounded-lg shadow mb-4">
+            @csrf
+            <div class="mb-4">
+                <label for="guest_file" class="block text-sm font-medium text-primary-dark">Import Tamu (Excel/CSV)</label>
+                <input type="file" name="guest_file" id="guest_file" class="w-full mt-1 p-2 border border-gray-300 rounded focus:ring-primary-light focus:border-primary-dark">
+            </div>
+            <button type="submit" class="px-4 py-2 bg-primary-dark text-white rounded shadow hover:bg-primary focus:ring-2 focus:ring-primary-light">
+                Import
+            </button>
+        </form>
         <form action="{{ route('guests.store') }}" method="POST" class="bg-white p-6 rounded-lg shadow">
             @csrf
             <!-- Input Nama -->

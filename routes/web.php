@@ -26,6 +26,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/ShowTamu', [GuestController::class, 'showDataTamu'])->name('showTamu');
     Route::get('/guests', [GuestController::class, 'index'])->name('guests.index');
     Route::get('/guests/create', [GuestController::class, 'create'])->name('guests.create');
+    Route::post('/guests/import', [GuestController::class, 'import'])->name('guests.import');
     Route::post('/guests', [GuestController::class, 'store'])->name('guests.store');
     Route::get('/guests/{slug}/edit', [GuestController::class, 'edit'])->name('guests.edit');
     Route::put('/guests/{guest}', [GuestController::class, 'update'])->name('guests.update');

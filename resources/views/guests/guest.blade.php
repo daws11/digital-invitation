@@ -36,9 +36,9 @@
         <!-- Tabel Tamu -->
         <div class="bg-white shadow rounded-lg overflow-hidden">
             <div class="p-4 bg-primary-dark">
-            <form id="search-form" class="flex items-center gap-2 ">
-            <input type="text" id="search-input" placeholder="Cari tamu..." class="px-4 py-2 border rounded-lg w-full focus:ring-2 focus:ring-primary outline-none" aria-label="Cari tamu">
-            <button type="submit" class="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary-dark transition focus:ring-2 focus:ring-primary-light" aria-label="Cari">Cari</button>
+            <form id="search-form" class="flex items-center gap-2" method="GET" action="{{ route('showTamu') }}">
+                <input type="text" id="search-input" name="search" placeholder="Cari tamu..." class="px-4 py-2 border rounded-lg w-full focus:ring-2 focus:ring-primary outline-none" aria-label="Cari tamu" value="{{ request('search') }}">
+                <button type="submit" class="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary-dark transition focus:ring-2 focus:ring-primary-light" aria-label="Cari">Cari</button>
             </form>
             </div>
             <table class="min-w-full bg-white relative">
@@ -70,6 +70,9 @@
                 @endforeach
             </tbody>
             </table>
+            <div class="m-4">
+                {{ $guests->links() }}
+            </div>
             <!-- Dropdown Container -->
             <div id="dropdown-container" class="hidden absolute right-0 bg-white border rounded-lg shadow-md mt-2 text-sm z-50 w-48">
             <ul id="dropdown-actions">
