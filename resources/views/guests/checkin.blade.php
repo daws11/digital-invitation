@@ -1,46 +1,38 @@
+
 @extends('layouts.app')
 
-@section('title', 'Penukaran Souvenir')
+@section('title', 'Check-In Tamu')
 
 @section('content')
-<div class="bg-primary-light min-h-screen py-8">
+<div class="bg-primary-light min-h-screen py-8 ">
     <!-- Header dan Statistik -->
     <div class="flex items-center justify-between px-8 py-4 mt-20 mx-20  bg-primary-dark text-white rounded-lg shadow mb-6">
         <div class="text-center">
-            <h2 class="text-4xl font-bold">{{ $totalSouvenirs }}</h2>
-            <p>Souvenir Keluar</p>
+        <h2 class="text-4xl font-bold">{{ $totalCheckedIn }}</h2>
+        <p>Tamu Sudah Check-In</p>
         </div>
     </div>
 
-    <!-- Penukaran Souvenir -->
+    <!-- Daftar Check-In -->
     <div class="container mx-auto px-6 pb-20">
-        <h2 class="text-xl font-bold text-primary-dark mb-4">Penukaran Souvenir</h2>
-        <div class="flex gap-4 mb-6">
-            <a href="{{ route('guests.exportPDF') }}" class="flex items-center px-4 py-2 bg-yellow-500 text-white rounded shadow hover:bg-yellow-600">
-                <i class="fa-solid fa-file-export mr-2"></i>EXPORT
-            </a>
-            <a href="{{ route('souvenir.scan-qr') }}" class="flex items-center px-4 py-2 bg-primary text-white rounded shadow hover:bg-primary-dark">
-                <i class="fa-solid fa-qrcode mr-2"></i>Scan QR
-            </a>
-            <!-- <a href="{{ route('guests.exportPDF') }}" class="flex items-center px-4 py-2 bg-primary text-white rounded shadow hover:bg-primary-dark">
-                <i class="fa-solid fa-qrcode mr-2"></i>Scan Ext
-            </a> -->
-            <!-- <a href="{{ route('guests.exportPDF') }}" class="flex items-center px-4 py-2 bg-primary text-white rounded shadow hover:bg-primary-dark">
-                <i class="fa-solid fa-search mr-2"></i>Cari Tamu
-            </a> -->
-        </div>
-
-        <!-- Daftar Souvenir -->
+        <h2 class="text-xl font-bold text-primary-dark mb-4">Daftar Check-In</h2>
         <div class="bg-white shadow rounded-lg p-4">
              @if($guests->isEmpty())
-                <p class="text-center text-gray-500">Tidak ada tamu yang menerima souvenir.</p>
+                <p class="text-center text-gray-500">Tidak ada tamu yang sudah check-in.</p>
             @else
                 @foreach ($guests as $guest)
                     <div class="flex items-center justify-between border-b pb-4 mb-4">
                         <div>
                             <h3 class="text-lg font-bold text-primary-dark">{{ $guest->name }}</h3>
                         </div>
-                        <span class="px-4 py-1 text-sm font-semibold text-green-700 bg-green-100 rounded-full">Terima Souvenir</span>
+                        <span class="text-xs text-gray-500"> 
+                            @if($guest->attended)
+                                <span class="bg-green-100 text-green-500">Sudah Ambil Voucher</span>
+                            @else
+                                <span class="bg-red-100 text-red-500">Belum Ambil Voucher</span>
+                            @endif
+                        </span>
+                        
                     </div>
                 @endforeach
 

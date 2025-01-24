@@ -47,7 +47,9 @@ Route::middleware('auth')->group(function () {
     Route::put('/guests/{slug}/update-souvenir', [SouvenirController::class, 'updateSouvenir'])->name('guests.updateSouvenir');
     Route::get('guests/souvenir/scan-qr', [SouvenirController::class, 'showQR'])->name('souvenir.scan-qr');
     Route::get('/settings', [SettingsController::class, 'index'])->name('settings.index');
-
+    Route::get('/checkin', [GuestController::class, 'checkin'])->name('guests.checkin');
+    Route::get('/welcome', [GuestController::class, 'welcome'])->name('guests.welcome');
+    Route::get('/guests/{slug}/print-qr', [GuestController::class, 'printQr'])->name('guests.printQr');
 });
 
 Auth::routes();

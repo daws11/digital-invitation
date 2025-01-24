@@ -18,6 +18,8 @@
         "vite": "^5.0"
     },
     "dependencies": {
-        "html5-qrcode": "^2.3.8"
+        "html5-qrcode": "^2.3.8",
+        "laravel-echo": "^1.19.0",
+        "pusher-js": "^8.4.0-rc2"
     }
 }

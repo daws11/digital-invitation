@@ -9,12 +9,11 @@
         </a>
 
         <!-- Data Tamu -->
-        <a href="{{ route('home') }}" 
-           class="text-center flex flex-col items-center {{ request()->routeIs('home') ? 'text-white' : 'text-gray-400' }} hover:text-yellow-300">
+        <a href="{{ route('showTamu') }}" 
+           class="text-center flex flex-col items-center {{ request()->routeIs('showTamu') ? 'text-white' : 'text-gray-400' }} hover:text-yellow-300">
             <span><i class="fa-solid fa-users"></i></span>
             <span class="text-xs md:text-sm">Data Tamu</span>
         </a>
-
     
         <!-- Scan QR -->
         <div class="text-center flex flex-col items-center">

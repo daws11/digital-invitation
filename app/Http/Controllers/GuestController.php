@@ -270,4 +270,22 @@ class GuestController extends Controller
             return redirect()->back()->with('error', 'Terjadi kesalahan saat mengimpor tamu: ' . $e->getMessage());
         }
     }
+    public function checkin()
+    {
+        $guests = Guest::where('attended', true)->paginate(10);
+        $totalCheckedIn = $guests->count();
+
+        return view('guests.checkin', compact('guests', 'totalCheckedIn'));
+    }
+    public function welcome()
+    {
+        return view('guests.welcome');
+    }
+
+    public function printQr($slug)
+    {
+        $guest = Guest::where('slug', $slug)->firstOrFail();
+    
+        return view('guests.qr-pdf', compact('guest'));
+    }
 }

@@ -32,7 +32,7 @@ class PhotoController extends Controller
         if ($request->hasFile('photo')) {
             $image = $request->file('photo');
             $filename = Str::random(20) . '.' . $image->getClientOriginalExtension();
-            $path = $image->storeAs('photos', $filename, 'public');
+            $path = $image->storeAs('foto', $filename, 'public');
 
             // Menyimpan path foto ke database (misalnya di tabel guests)
             $guest = Guest::find($request->guest_id);  // Misalnya kita ambil guest_id dari form
@@ -59,5 +59,3 @@ class PhotoController extends Controller
         return response()->json(['photo_url' => asset('storage/' . $guest->photo)]);
     }
 }
-
-

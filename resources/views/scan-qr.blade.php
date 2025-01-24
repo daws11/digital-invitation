@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="container mx-auto p-4 bg-primary-light h-screen">
-        <h1 class="text-3xl font-bold text-primary-dark text-center mb-6">
+        <h1 class="text-3xl font-bold text-primary-dark text-center mb-6 mt-20">
             Scan QR Code untuk Kehadiran Tamu
         </h1>
 
@@ -15,8 +15,8 @@
         </div>
 
         <!-- QR Code Scanner -->
-         <div class="container mx-auto w-full h-max bg-gray-200 rounded-xl">
-             <div id="reader" class="w-full h-full bg-gray-200 rounded-xl"></div>
+        <div class="container mx-auto w-full h-max bg-gray-200 rounded-xl">
+            <div id="reader" class="w-full h-full bg-gray-200 rounded-xl"></div>
         </div>
     </div>
 
@@ -30,6 +30,9 @@
             <button id="close-modal" class="mt-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">
                 Tutup
             </button>
+            <button id="print-qr" class="mt-4 px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600">
+                Print QR Code
+            </button>
         </div>
     </div>
 
@@ -39,7 +42,8 @@
         let html5QrCode;
         let currentDeviceId = null;
         let videoStream = null;
-        let isScannerRunning = false; 
+        let isScannerRunning = false;
+
         // Menangani pemindaian QR Code
         function onScanSuccess(decodedText, decodedResult) {
             const url = decodedText;
@@ -47,9 +51,8 @@
             const match = url.match(regex);
 
             if (match) {
-                const slug = match[1];  // Ambil slug dari URL yang dipindai
+                const slug = match[1];
 
-                // Menggunakan fetch untuk melakukan request PUT ke server
                 fetch(`/guests/${slug}/update-attendance`, {
                     method: 'PUT',
                     headers: {
@@ -64,17 +67,24 @@
                     if (!response.ok) {
                         throw new Error('Gagal memperbarui kehadiran. Status: ' + response.status);
                     }
-                    return response.json();  // Jika berhasil, konversi ke JSON
+                    return response.json();
                 })
                 .then(data => {
                     if (data.success) {
-                        // Tampilkan modal dengan informasi tamu
                         document.getElementById('guest-name').textContent = `Nama Tamu: ${data.guest.name}`;
                         document.getElementById('attendance-status').textContent = `Kehadiran: ${data.guest.will_attend ? 'Ya' : 'Tidak'}`;
                         document.getElementById('guest-count').textContent = `Jumlah Tamu: ${data.guest.number_of_guests}`;
-
-                        // Tampilkan modal
                         document.getElementById('attendance-modal').classList.remove('hidden');
+
+                        // Store guest name and slug in localStorage
+                        localStorage.setItem('guestName', data.guest.name);
+                        localStorage.setItem('guestSlug', slug);
+
+                        // Send message to other tabs
+                        window.postMessage({ type: 'GUEST_UPDATED', guestName: data.guest.name }, '*');
+
+                        // Set the slug for the print button
+                        document.getElementById('print-qr').setAttribute('data-slug', slug);
                     } else {
                         alert('Tamu tidak ditemukan!');
                     }
@@ -182,8 +192,6 @@
                 console.error("Error starting QR code scanner:", error);
             });
 
-      
-
             isScannerRunning = true; 
         }
 
@@ -206,5 +214,15 @@
             getCameras();
             console.log('halaman dimuat');
         };
+
+        // Handle print button click
+        document.getElementById('print-qr').addEventListener('click', function() {
+            const slug = this.getAttribute('data-slug');
+            if (slug) {
+                window.open(`/guests/${slug}/print-qr`, '_blank');
+            } else {
+                alert('QR Code tidak valid!');
+            }
+        });
     </script>
 @endsection

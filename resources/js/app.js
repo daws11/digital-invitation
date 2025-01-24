@@ -1,4 +1,5 @@
 import "./bootstrap";
+import '../css/app.css';
 import "./dashboard";
 
 import { Html5Qrcode } from "html5-qrcode";

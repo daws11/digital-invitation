@@ -7,7 +7,7 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('digital Wedding', 'Digital Wedding') }}</title>
+    <title>Digital Wedding</title>
     <link rel="shortcut icon" href="{{ asset('favicon.svg') }}" type="image/svg+xml">
 
     <!-- Fonts -->

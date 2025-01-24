@@ -89,8 +89,8 @@
         </div>
 
         <div class="bg-primary-dark text-white p-4 rounded-lg shadow-lg flex justify-center items-center transition-shadow duration-300">
-            <a href="{{ route('guests.show', ['slug' => 'tamu-undangan']) }}" 
-               class="flex flex-col items-center text-center {{ request()->routeIs('guests.show') ? 'text-white' : 'text-gray-400' }} 
+            <a href="{{ route('guests.welcome') }}" target="_blank"
+               class="flex flex-col items-center text-center {{ request()->routeIs('welcome') ? 'text-white' : 'text-gray-400' }} 
                     hover:text-yellow-300 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:ring-opacity-50 transition-transform duration-200">
                 <span class="text-3xl mb-2 text-white hover:text-yellow-300">
                     <i class="fa-solid fa-desktop"></i>
@@ -138,16 +138,13 @@
                 @endforelse
             </tbody>
         </table>
-        <div class="m-4">
-            {{ $guests->links() }}
-        </div>
     </div>
 
     <!-- Modal Pop-up -->
-    <div id="checkInModal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden z-50">
+    <div id="checkInModal" class="fixed inset-0 flex items-center justify-center mx-5 hidden z-50">
         <div class="bg-white rounded-lg shadow-lg max-w-md w-full">
             <!-- Header -->
-            <div class="bg-primary text-white text-center p-4 rounded-t-lg">
+            <div class="bg-primary-dark text-white text-center p-4 rounded-t-lg">
                 <h3 class="text-xl font-bold">Check-in Tamu</h3>
             </div>
             <!-- Body -->
@@ -156,21 +153,26 @@
                 <!-- Buttons -->
                 <div class="space-y-4">
                     <a href="{{ route('scan-qr.show') }}" 
-                        class="flex items-center justify-center text-center bg-green-500  text-white  px-4 py-2 rounded hover:bg-green-600 transition
+                        class="flex items-center justify-center text-center bg-primary-dark  text-white  px-4 py-2 rounded hover:bg-primary transition
                             hover:text-yellow-300 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:ring-opacity-50 transition-transform duration-200">
                             <i class="fa-solid fa-qrcode mr-2"></i> Scan QR-Code
                     </a>
-                    <button id="triggerSearchModal" class="w-full items-center justify-center text-center bg-green-500  text-white  px-4 py-2 rounded hover:bg-green-600 transition
+                    <button id="triggerSearchModal" class="w-full items-center justify-center text-center bg-primary-dark text-white  px-4 py-2 rounded hover:bg-primary transition
                         hover:text-yellow-300 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:ring-opacity-50 transition-transform duration-200">
                         <i class="fa-solid fa-search mr-2"></i> Cari Tamu Terdaftar
                     </button>
-                    <a href="{{ route('guests.create') }}" class="flex items-center justify-center text-center bg-green-500  text-white  px-4 py-2 rounded hover:bg-green-600 transition
+                    <a href="{{ route('guests.create') }}" class="flex items-center justify-center text-center bg-primary-dark  text-white  px-4 py-2 rounded hover:bg-primary transition
                         hover:text-yellow-300 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:ring-opacity-50 transition-transform duration-200">
                         <i class="fa-solid fa-user-plus mr-2"></i> Input Tamu Baru
+                    </a>
+                    <a href="{{ route('guests.checkin') }}" class="flex items-center justify-center text-center bg-primary-dark  text-white  px-4 py-2 rounded hover:bg-primary transition
+                        hover:text-yellow-300 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:ring-opacity-50 transition-transform duration-200">
+                        <i class="fa-solid fa-user-plus mr-2"></i> Pengambilan Voucher Souvenir
                     </a>
                     <button id="closeModalBtn" class="w-full flex items-center justify-center bg-gray-400 text-white px-4 py-2 rounded hover:bg-gray-500 transition">
                         <i class="fa-solid fa-times mr-2"></i> Tutup
                     </button>
+                    
                 </div>
             </div>
         </div>
