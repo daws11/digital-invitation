@@ -15,29 +15,34 @@ class ScanQRController extends Controller
     }
 
     public function updateAttendance($slug)
-{
-    try {
-        // Cari tamu berdasarkan slug
-        $guest = Guest::where('slug', $slug)->firstOrFail();
+    {
+        try {
+            // Cari tamu berdasarkan slug
+            $guest = Guest::where('slug', $slug)->firstOrFail();
 
-        // Update status kehadiran
-        $guest->attended = true;
-        $guest->save();
+            if ($guest->attended) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Tamu sudah melakukan scan sebelumnya.'
+                ], 400);
+            }
+            // Update status kehadiran
+            $guest->attended = true;
+            $guest->save();
 
-        // Kirim data tamu dalam response
-        return response()->json([
-            'success' => true,
-            'guest' => [
-                'name' => $guest->name,
-                'will_attend' => $guest->will_attend,
-                'number_of_guests' => $guest->number_of_guests
-            ]
-        ]);
-    } catch (\Exception $e) {
-        // Tangani kesalahan jika tamu tidak ditemukan
-        return response()->json(['success' => false, 'message' => 'Tamu tidak ditemukan'], 404);
+            // Kirim data tamu dalam response
+            return response()->json([
+                'success' => true,
+                'guest' => [
+                    'name' => $guest->name,
+                    'will_attend' => $guest->will_attend,
+                    'number_of_guests' => $guest->number_of_guests
+                ]
+            ]);
+        } catch (\Exception $e) {
+            // Tangani kesalahan jika tamu tidak ditemukan
+            return response()->json(['success' => false, 'message' => 'Tamu tidak ditemukan'], 404);
+        }
     }
-}
-
 }
 

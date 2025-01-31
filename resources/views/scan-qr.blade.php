@@ -27,19 +27,67 @@
             <p id="guest-name" class="text-xl mb-2"></p>
             <p id="attendance-status" class="text-lg mb-4"></p>
             <p id="guest-count" class="text-lg"></p>
+            <!-- Tombol untuk membuka modal -->
+            <button id="openConfirmationModal" class="mt-4 px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 w-full">
+                Update Konfirmasi Kehadiran
+            </button>
             <button id="close-modal" class="mt-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">
                 Tutup
             </button>
         </div>
     </div>
 
+    
+    <!-- Modal Konfirmasi Kehadiran -->
+    <div id="confirmationModal" class="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center hidden">
+        <div class="bg-white p-6 rounded-lg shadow-lg w-full max-w-md mx-4">
+            <h3 class="text-xl font-semibold mb-4">Update Konfirmasi Kehadiran</h3>
+            <form id="confirmation-form" class="space-y-4">
+                @csrf
+                @method('PUT')
+                <label for="will_attend" class="block text-lg">Apakah Anda Akan Hadir?</label>
+                <select id="will_attend" name="will_attend" class="w-full p-2 border border-gray-300 rounded">
+                    <option value="1">Ya</option>
+                    <option value="0">Tidak</option>
+                </select>
+                
+                <label for="number_of_guests" class="block text-lg">Jumlah Orang Yang Bersama Anda?</label>
+                <select id="number_of_guests" name="number_of_guests" class="w-full p-2 border border-gray-300 rounded"></select>
+                
+                <div class="flex justify-end space-x-2">
+                    <button type="button" id="closeConfirmationModal" class="px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600">
+                        Batal
+                    </button>
+                    <button type="submit" class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">
+                        Konfirmasi Kehadiran
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+
     <!-- Script untuk QR Code Scanner -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
     <script>
         let html5QrCode;
         let currentDeviceId = null;
         let videoStream = null;
         let isScannerRunning = false; 
+
+        document.getElementById('close-modal').addEventListener('click', function() {
+            document.getElementById('attendance-modal').classList.add('hidden');
+        });
+        
+        document.getElementById('openConfirmationModal').addEventListener('click', function() {
+            document.getElementById('confirmationModal').classList.remove('hidden');
+        });
+        
+        document.getElementById('closeConfirmationModal').addEventListener('click', function() {
+            document.getElementById('confirmationModal').classList.add('hidden');
+        });
+
         // Menangani pemindaian QR Code
         function onScanSuccess(decodedText, decodedResult) {
             const url = decodedText;
@@ -60,22 +108,39 @@
                         attended: true
                     })
                 })
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Gagal memperbarui kehadiran. Status: ' + response.status);
-                    }
-                    return response.json();  // Jika berhasil, konversi ke JSON
-                })
-                .then(data => {
+                .then(async response => {
+                    const data = await response.json();
+                    
                     if (data.success) {
                         // Tampilkan modal dengan informasi tamu
                         document.getElementById('guest-name').textContent = `Nama Tamu: ${data.guest.name}`;
                         document.getElementById('attendance-status').textContent = `Kehadiran: ${data.guest.will_attend ? 'Ya' : 'Tidak'}`;
                         document.getElementById('guest-count').textContent = `Jumlah Tamu: ${data.guest.number_of_guests}`;
 
+                        document.getElementById('will_attend').value = data.guest.will_attend ? '1' : '0';
+
+                        const guestCount = data.guest.number_of_guests;
+                        const numberOfGuestsSelect = document.getElementById('number_of_guests');
+
+                        // Reset dropdown
+                        numberOfGuestsSelect.innerHTML = '';
+
+                        // Isi ulang dropdown sesuai jumlah tamu
+                        for (let i = 1; i <= 5; i++) {
+                            const option = document.createElement('option');
+                            option.value = i;
+                            option.textContent = i;
+                            if (i === guestCount) {
+                                option.selected = true;
+                            }
+                            numberOfGuestsSelect.appendChild(option);
+                        }
+
                         // Tampilkan modal
                         document.getElementById('attendance-modal').classList.remove('hidden');
-                    } else {
+                    } else if (response.status === 400) {
+                        alert(data.message);
+                    }else {
                         alert('Tamu tidak ditemukan!');
                     }
                 })
@@ -83,6 +148,38 @@
                     console.error('Error:', error);
                     alert('Terjadi kesalahan: ' + error.message);
                 });
+
+
+                document.getElementById("confirmation-form").addEventListener("submit", function(event) {
+                    event.preventDefault(); // Mencegah pengiriman form secara default
+
+                    const willAttend = document.getElementById("will_attend").value;
+                    const numberOfGuests = document.getElementById("number_of_guests").value;
+
+                    fetch(`/api/guests/${slug}/rsvp`, {
+                        method: "PUT",
+                        headers: {
+                            "Content-Type": "application/json",
+                            "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').getAttribute("content")
+                        },
+                        body: JSON.stringify({
+                            will_attend: willAttend,
+                            number_of_guests: numberOfGuests
+                        })
+                    })
+                    .then(async response => {
+                        const data = await response.json();
+                        if (!response.ok) throw new Error(data.message || "Terjadi kesalahan");
+
+                        alert("Konfirmasi Kehadiran Berhasil Diperbarui!");
+                        document.getElementById("confirmationModal").classList.add("hidden"); // Tutup modal setelah sukses
+                    })
+                    .catch(error => {
+                        console.error("Error:", error);
+                        alert("Terjadi kesalahan: " + error.message);
+                    });
+                });
+
             } else {
                 alert('QR Code tidak valid!');
             }
@@ -206,5 +303,24 @@
             getCameras();
             console.log('halaman dimuat');
         };
+
+        document.addEventListener('DOMContentLoaded', function () {
+    const updateButton = document.querySelector('[data-target="#confirmationModal"]');
+    const confirmationModal = document.getElementById('confirmationModal');
+
+    if (updateButton && confirmationModal) {
+        updateButton.addEventListener('click', function () {
+            confirmationModal.classList.add('show');
+            confirmationModal.style.display = 'block';
+            document.body.classList.add('modal-open');
+        });
+
+        confirmationModal.querySelector('.close').addEventListener('click', function () {
+            confirmationModal.classList.remove('show');
+            confirmationModal.style.display = 'none';
+            document.body.classList.remove('modal-open');
+        });
+    }
+});
     </script>
 @endsection

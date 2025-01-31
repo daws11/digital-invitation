@@ -202,6 +202,47 @@ class GuestController extends Controller
         return redirect()->route('guests.show', $slug)->with('success', 'RSVP berhasil diperbarui.');
     }
 
+
+    public function updateRSVPJson(Request $request, $slug)
+    {
+        try {
+            // Cari tamu berdasarkan slug
+            $guest = Guest::where('slug', $slug)->firstOrFail();
+
+            // Validasi input
+            $validatedData = $request->validate([
+                'will_attend' => 'required|boolean',
+                'number_of_guests' => 'required|integer|min:1|max:5',
+            ]);
+
+            // Update RSVP
+            $guest->update($validatedData);
+
+            // Kirim response JSON
+            return response()->json([
+                'success' => true,
+                'message' => 'RSVP berhasil diperbarui.',
+                'guest' => [
+                    'name' => $guest->name,
+                    'will_attend' => $guest->will_attend,
+                    'number_of_guests' => $guest->number_of_guests
+                ]
+            ]);
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Validasi gagal.',
+                'errors' => $e->errors()
+            ], 422);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Terjadi kesalahan saat memperbarui RSVP.'
+            ], 500);
+        }
+    }
+
+
     public function exportPDF()
     {
         $guests = Guest::all();
