@@ -24,10 +24,10 @@ class GuestController extends Controller
         })->paginate(10);
     
         $totalGuests = Guest::count(); 
-        $totalAttended = Guest::where('will_attend', 1)->count(); 
-        $totalNumberOfGuests = Guest::whereNotNull('number_of_guests')->sum('number_of_guests'); 
+        $totalAttended = Guest::where('attended', true)->count(); 
+        $totalNotAttended = $totalGuests - $totalAttended;
     
-        return view('guests.index', compact('totalGuests', 'totalAttended', 'totalNumberOfGuests', 'guests'));
+        return view('guests.index', compact('totalGuests', 'totalAttended', 'totalNotAttended', 'guests'));
     }
 
     public function showDataTamu(Request $request)

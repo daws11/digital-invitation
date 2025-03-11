@@ -5,7 +5,7 @@
 @section('content')
 <div class="bg-primary-light min-h-screen py-8 pb-20">
     <!-- Statistik -->
-    <div class="grid grid-cols-3 gap-6 mx-8 mb-6 mt-14">
+    <div class="grid grid-cols-3 gap-6 mx-8 mb-6 mt-20">
         @foreach([
             ['title' => 'Undangan', 'value' => $totalGuests],
             ['title' => 'Hadir', 'value' => $totalAttended],

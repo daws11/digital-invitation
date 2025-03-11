@@ -79,9 +79,10 @@
                         // Store guest name and slug in localStorage
                         localStorage.setItem('guestName', data.guest.name);
                         localStorage.setItem('guestSlug', slug);
+                        localStorage.setItem('guestType', data.guest.type); 
 
                         // Send message to other tabs
-                        window.postMessage({ type: 'GUEST_UPDATED', guestName: data.guest.name }, '*');
+                        window.postMessage({ type: 'GUEST_UPDATED', guestName: data.guest.name ,guestType: data.guest.type}, '*');
 
                         // Set the slug for the print button
                         document.getElementById('print-qr').setAttribute('data-slug', slug);
