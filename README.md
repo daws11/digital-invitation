@@ -7,60 +7,78 @@
 <a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
 </p>
 
-## About Laravel
+## Tentang Proyek
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+Proyek ini adalah aplikasi undangan digital berbasis web yang dibangun menggunakan Laravel, sebuah framework PHP yang kuat dan elegan. Aplikasi ini memungkinkan pengguna untuk membuat dan mengelola undangan digital dengan mudah.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Fitur
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+- **Pembuatan Undangan**: Pengguna dapat membuat undangan digital dengan berbagai template yang tersedia.
+- **Manajemen Tamu**: Pengguna dapat mengelola daftar tamu undangan.
+- **Pengiriman Undangan**: Undangan dapat dikirim melalui email atau dibagikan melalui tautan.
+- **RSVP**: Tamu dapat mengonfirmasi kehadiran mereka melalui undangan digital.
+- **Notifikasi**: Pengguna akan menerima notifikasi tentang status undangan dan RSVP.
 
-## Learning Laravel
+## Instalasi
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+1. Clone repositori ini:
+    ```sh
+    git clone https://github.com/username/repo-name.git
+    ```
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+2. Masuk ke direktori proyek:
+    ```sh
+    cd repo-name
+    ```
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+3. Install dependensi menggunakan Composer:
+    ```sh
+    composer install
+    ```
 
-## Laravel Sponsors
+4. Salin file `.env.example` menjadi `.env` dan sesuaikan konfigurasi yang diperlukan:
+    ```sh
+    cp .env.example .env
+    ```
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+5. Generate kunci aplikasi:
+    ```sh
+    php artisan key:generate
+    ```
 
-### Premium Partners
+6. Migrasi dan seed database:
+    ```sh
+    php artisan migrate --seed
+    ```
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+7. Jalankan server pengembangan:
+    ```sh
+    php artisan serve
+    ```
 
-## Contributing
+## Konfigurasi
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+Konfigurasi aplikasi dapat ditemukan di direktori `config/`. Beberapa file konfigurasi penting antara lain:
 
-## Code of Conduct
+- `config/app.php`: Konfigurasi aplikasi umum.
+- `config/database.php`: Konfigurasi koneksi database.
+- `config/mail.php`: Konfigurasi pengiriman email.
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+## Struktur Direktori
 
-## Security Vulnerabilities
+- `app/`: Berisi kode aplikasi utama.
+- `bootstrap/`: Berisi file bootstrap aplikasi.
+- `config/`: Berisi file konfigurasi aplikasi.
+- `database/`: Berisi migrasi dan seeder database.
+- `public/`: Berisi file publik yang dapat diakses oleh pengguna.
+- `resources/`: Berisi view, asset, dan file bahasa.
+- `routes/`: Berisi definisi rute aplikasi.
+- `storage/`: Berisi file yang dihasilkan oleh aplikasi.
+- `tests/`: Berisi file pengujian aplikasi.
+- `vendor/`: Berisi dependensi yang diinstall oleh Composer.
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+## Pengujian
 
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+Untuk menjalankan pengujian, gunakan perintah berikut:
+```sh
+php artisan test
