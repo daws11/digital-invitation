@@ -1,5 +1,9 @@
+<<<<<<< HEAD
 <p align="center"> <img src="/public/img/readme/logoreadme.jpg" width="400" alt="Laravel Logo"></a></p>
 
+=======
+<p align="center"><a href="https://laravel.com" target="_blank"><img src="logoreadme.jpg" width="400" alt="Digital Wedding Logo"></a></p>
+>>>>>>> 28cd100387d229a7bd87cd72c225f5896f4cdee6
 
 
 ## Tentang Proyek
