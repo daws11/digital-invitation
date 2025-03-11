@@ -4,6 +4,12 @@
 
 Proyek ini adalah aplikasi undangan digital berbasis web yang dibangun menggunakan Laravel, sebuah framework PHP yang kuat dan elegan. Aplikasi ini memungkinkan pengguna untuk membuat dan mengelola undangan digital dengan mudah dengan fitur Scan QR code untuk melakukan update kehadiran tamu dan Manajemen Souvenir.
 
+## Aplikasi dapat di akses pada <a href="https://ekayahya.my.id/">Link Berikut </a> 
+dengan kredensial:
+ - email: admin@admin.com
+ - password: password
+
+
 ## Fitur
 
 - **Pembuatan Undangan**: Pengguna dapat membuat undangan digital dengan berbagai template yang tersedia.
@@ -25,7 +31,7 @@ Halaman ini memungkinkan pengguna untuk melihat dan mengelola kehadiran tamu.
 
 ### Check-in
 Halaman check-in memungkinkan pengguna untuk memeriksa tamu yang hadir dengan berbagai metode.
-<p align="center"><img src="/public/img/readme/heckin.jpg" width="300" alt="Check-in"></p>
+<p align="center"><img src="/public/img/readme/checkin.jpg" width="300" alt="Check-in"></p>
 
 ### Menu Check-in
 Menu ini memberikan beberapa opsi untuk check-in tamu, termasuk scan QR-Code dan input manual.
