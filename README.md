@@ -1,33 +1,50 @@
-<<<<<<< HEAD
-<p align="center"> <img src="/public/img/readme/logoreadme.jpg" width="400" alt="Laravel Logo"></a></p>
-
-=======
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="logoreadme.jpg" width="400" alt="Digital Wedding Logo"></a></p>
->>>>>>> 28cd100387d229a7bd87cd72c225f5896f4cdee6
-
+<p align="center"> <img src="/public/img/readme/logoreadme.jpg" width="400" alt="Digital Wedding Logo"></a></p>
 
 ## Tentang Proyek
 
-Proyek ini adalah aplikasi undangan digital berbasis web yang dibangun menggunakan Laravel, sebuah framework PHP yang kuat dan elegan. Aplikasi ini memungkinkan pengguna untuk membuat dan mengelola undangan digital dengan mudah.
+Proyek ini adalah aplikasi undangan digital berbasis web yang dibangun menggunakan Laravel, sebuah framework PHP yang kuat dan elegan. Aplikasi ini memungkinkan pengguna untuk membuat dan mengelola undangan digital dengan mudah dengan fitur Scan QR code untuk melakukan update kehadiran tamu dan Manajemen Souvenir.
 
 ## Fitur
 
 - **Pembuatan Undangan**: Pengguna dapat membuat undangan digital dengan berbagai template yang tersedia.
 - **Manajemen Tamu**: Pengguna dapat mengelola daftar tamu undangan.
-- **Pengiriman Undangan**: Undangan dapat dikirim melalui email atau dibagikan melalui tautan.
+- **Scan QR Kehadiran Tamu**: Resepsionis dapat melakukan scan QR code tamu untuk melakukan update kehadiran.
+- **Manajemen Souvenir**: Resepsionis juga dapat memberikan QR code yang nantinya akan di print dan diberikan ke tamu yang datang lalu ditukarkan menjadi souvenir saat hendak pulang
+- **Pengiriman Undangan**: Undangan dapat dikirim melalui pesan whatsapp atau dibagikan melalui tautan.
 - **RSVP**: Tamu dapat mengonfirmasi kehadiran mereka melalui undangan digital.
-- **Notifikasi**: Pengguna akan menerima notifikasi tentang status undangan dan RSVP.
+
+## Halaman Aplikasi
+
+### Dashboard
+Halaman dashboard memberikan ringkasan informasi tentang undangan dan tamu.
+<p align="center"><img src="/public/img/readme/dashboard.jpg" width="300" alt="Dashboard"></p>
+
+### Kehadiran
+Halaman ini memungkinkan pengguna untuk melihat dan mengelola kehadiran tamu.
+<p align="center"><img src="/public/img/readme/kehadiran.jpg" width="300" alt="Kehadiran"></p>
+
+### Check-in
+Halaman check-in memungkinkan pengguna untuk memeriksa tamu yang hadir dengan berbagai metode.
+<p align="center"><img src="/public/img/readme/heckin.jpg" width="300" alt="Check-in"></p>
+
+### Menu Check-in
+Menu ini memberikan beberapa opsi untuk check-in tamu, termasuk scan QR-Code dan input manual.
+<p align="center"><img src="/public/img/readme/menucheckin.jpg" width="300" alt="Menu Check-in"></p>
+
+### Souvenir
+Halaman ini digunakan untuk mengelola penukaran souvenir oleh tamu.
+<p align="center"><img src="/public/img/readme/souvenir.jpg" width="300" alt="Souvenir"></p>
 
 ## Instalasi
 
 1. Clone repositori ini:
     ```sh
-    git clone https://github.com/username/repo-name.git
+    git clone https://github.com/daws11/digital-invitation.git
     ```
 
 2. Masuk ke direktori proyek:
     ```sh
-    cd repo-name
+    cd digital-invitation
     ```
 
 3. Install dependensi menggunakan Composer:
