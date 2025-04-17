@@ -4,7 +4,9 @@
   <a href="#english-version">English</a> |
   <a href="#versi-bahasa-indonesia">Indonesia</a>
 </p>
+
 <a name="english-version"></a>
+
 ## About The Project
 
 This project is a web-based digital invitation application built using Laravel, a robust and elegant PHP framework. This application allows users to easily create and manage digital invitations with features like QR code scanning to update guest attendance and Souvenir Management.
