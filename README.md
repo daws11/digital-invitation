@@ -4,7 +4,6 @@
   <a href="#english-version">English</a> |
   <a href="#versi-bahasa-indonesia">Indonesia</a>
 </p>
----
 <a name="english-version"></a>
 ## About The Project
 
